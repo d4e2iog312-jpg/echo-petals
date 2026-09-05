@@ -77,11 +77,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Día de las Flores Amarillas 🌻" },
+      {
+        name: "description",
+        content: "Flores amarillas, una carta y una canción para el 21 de septiembre.",
+      },
+      { property: "og:title", content: "Día de las Flores Amarillas 🌻" },
+      {
+        property: "og:description",
+        content: "Flores amarillas, una carta y una canción para el 21 de septiembre.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@Lovable" },
