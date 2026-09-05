@@ -73,7 +73,7 @@ export function FlowerRain({ active = true }: { active?: boolean }) {
         amp: 26 + Math.random() * 55,
         freq: 0.5 + Math.random() * 0.8,
         phase: Math.random() * Math.PI * 2,
-        vy: 26 + Math.random() * 26,
+        vy: 58 + Math.random() * 42,
         spin: (Math.random() * 2 - 1) * 26,
         tilt: Math.random() * 360,
         profile: Math.floor(Math.random() * PROFILES.length),

@@ -480,7 +480,7 @@ body {
   position: relative;
   width: 100%;
   order: 2;
-  margin-top: -3.5rem;
+  margin-top: -2.5rem;
   z-index: 2;
 }
 
@@ -516,7 +516,7 @@ body {
     linear-gradient(150deg, oklch(0.97 0.02 88), oklch(0.92 0.03 82));
   color: var(--tinta);
   text-align: left;
-  padding: clamp(1.5rem, 4vw, 2.5rem);
+  padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1.5rem, 4vw, 2.5rem) clamp(4.5rem, 12vw, 6rem);
   border-radius: 4px;
   box-shadow: var(--sombra-calida);
   filter: url(#arrugado);
