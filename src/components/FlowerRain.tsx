@@ -155,7 +155,7 @@ export function FlowerRain({ active = true }: { active?: boolean }) {
         y: rect ? rect.top : f.y,
         size: f.size,
         profile: f.profile,
-        frase: FRASES[Math.floor(Math.random() * FRASES.length)] ?? FRASES[0],
+        frase: FRASES[Math.floor(Math.random() * FRASES.length)] ?? "feliz día :3",
         rot: f.tilt,
       },
     ]);
