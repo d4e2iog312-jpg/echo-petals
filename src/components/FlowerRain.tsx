@@ -107,7 +107,7 @@ export function FlowerRain({ active = true }: { active?: boolean }) {
       lastTime = now;
       if (dx + dy + dz > 28 && now - burstRef.current > 900) {
         burstRef.current = now;
-        spawn(16);
+        spawn(4);
       }
     };
     window.addEventListener("devicemotion", onMotion);
@@ -155,7 +155,7 @@ export function FlowerRain({ active = true }: { active?: boolean }) {
         y: rect ? rect.top : f.y,
         size: f.size,
         profile: f.profile,
-        frase: FRASES[Math.floor(Math.random() * FRASES.length)]!,
+        frase: FRASES[Math.floor(Math.random() * FRASES.length)] ?? "feliz día :3",
         rot: f.tilt,
       },
     ]);
@@ -168,7 +168,8 @@ export function FlowerRain({ active = true }: { active?: boolean }) {
   return (
     <div className="flower-layer">
       {falling.map((f) => {
-        const p = PROFILES[f.profile]!;
+        const p = PROFILES[f.profile] ?? PROFILES[0];
+        if (!p) return null;
         return (
           <button
             key={f.id}
@@ -197,7 +198,8 @@ export function FlowerRain({ active = true }: { active?: boolean }) {
       })}
 
       {broken.map((b) => {
-        const p = PROFILES[b.profile]!;
+        const p = PROFILES[b.profile] ?? PROFILES[0];
+        if (!p) return null;
         return (
           <div
             key={b.id}

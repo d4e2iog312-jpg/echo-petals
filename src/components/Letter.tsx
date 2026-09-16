@@ -1,7 +1,8 @@
 import { useState } from "react";
 import sobreAsset from "@/assets/sobre.png.asset.json";
+import cartaIlustrada from "@/assets/carta-ilustrada.png.asset.json";
 
-export function Letter({ texto }: { texto: string[] }) {
+export function Letter() {
   const [open, setOpen] = useState(false);
 
   return (
@@ -52,19 +53,12 @@ export function Letter({ texto }: { texto: string[] }) {
       )}
 
       {open && (
-        <div className="letter-open">
-          <div className="envelope-back">
-            <img src={sobreAsset.url} alt="" aria-hidden />
-            <span className="flap" />
-          </div>
-          <article className="paper">
-            {texto.map((p, i) => (
-              <p key={i} style={{ animationDelay: `${1.3 + i * 0.35}s` }}>
-                {p}
-              </p>
-            ))}
-            <span className="paper-sign">— con cariño 🌻</span>
-          </article>
+        <div className="letter-open" key="carta-abierta">
+          <img
+            className="illustrated-letter"
+            src={cartaIlustrada.url}
+            alt="Carta ilustrada del Día de las Flores Amarillas"
+          />
         </div>
       )}
     </div>

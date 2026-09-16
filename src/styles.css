@@ -284,14 +284,22 @@ body {
   opacity: 0.9;
 }
 
-.flor-portada {
-  width: clamp(110px, 22vw, 200px);
-  image-rendering: pixelated;
+.personaje-portada {
+  width: min(92vw, 36rem);
+  max-height: min(58svh, 42rem);
+  object-fit: contain;
   filter: drop-shadow(0 14px 24px oklch(0.25 0.1 40 / 0.6));
   animation: flotar 5s ease-in-out infinite alternate;
 }
 
-.flor-final { animation-duration: 3.4s; }
+.mensaje-final {
+  max-width: 46rem;
+  font-family: var(--font-mano);
+  font-size: clamp(1.65rem, 5vw, 2.7rem);
+  line-height: 1.35;
+  color: var(--papel);
+  text-shadow: 0 5px 20px oklch(0.22 0.08 40 / 0.85);
+}
 
 @keyframes flotar {
   from { transform: translateY(0) rotate(-5deg); }
@@ -338,6 +346,14 @@ body {
   transition: background 0.4s ease;
 }
 .paso.on { background: var(--sol); }
+
+.creditos {
+  position: absolute;
+  bottom: 5.7rem;
+  font-family: var(--font-pixel);
+  font-size: 0.48rem;
+  color: oklch(0.96 0.02 85 / 0.7);
+}
 
 /* ---------- flores que caen ---------- */
 .flower-layer {
@@ -438,7 +454,7 @@ body {
 
 /* ---------- carta ---------- */
 .letter-zone {
-  width: min(100%, 46rem);
+  width: min(100%, 52rem);
   display: flex;
   justify-content: center;
 }
@@ -470,89 +486,34 @@ body {
 
 .letter-open {
   position: relative;
-  width: min(90vw, 34rem);
+  width: min(88vw, 43rem);
+  max-height: 58svh;
   display: flex;
-  flex-direction: column;
   align-items: center;
+  justify-content: center;
 }
 
-.envelope-back {
-  position: relative;
-  width: 100%;
-  order: 2;
-  margin-top: -2.5rem;
-  z-index: 2;
-}
-
-.envelope-back img {
-  width: 100%;
+.illustrated-letter {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  max-height: 58svh;
+  object-fit: contain;
   filter: drop-shadow(0 18px 30px oklch(0.22 0.09 40 / 0.6));
-}
-
-.flap {
-  position: absolute;
-  top: 0;
-  left: 6%;
-  width: 88%;
-  height: 52%;
-  background: linear-gradient(180deg, oklch(0.93 0.02 85), oklch(0.86 0.03 80));
-  clip-path: polygon(0 0, 100% 0, 50% 100%);
-  transform-origin: top center;
-  animation: abrir-solapa 0.9s ease-out forwards;
-}
-
-@keyframes abrir-solapa {
-  from { transform: rotateX(0deg); }
-  to { transform: rotateX(178deg); }
-}
-
-.paper {
-  order: 1;
-  position: relative;
-  z-index: 1;
-  width: 96%;
-  background:
-    repeating-linear-gradient(180deg, transparent 0 30px, oklch(0.7 0.03 80 / 0.12) 30px 31px),
-    linear-gradient(150deg, oklch(0.97 0.02 88), oklch(0.92 0.03 82));
-  color: var(--tinta);
-  text-align: left;
-  padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1.5rem, 4vw, 2.5rem) clamp(4.5rem, 12vw, 6rem);
-  border-radius: 4px;
-  box-shadow: var(--sombra-calida);
   filter: url(#arrugado);
-  transform-origin: bottom center;
   animation: desarrugar 1.6s cubic-bezier(0.22, 0.9, 0.25, 1) forwards;
 }
 
 @keyframes desarrugar {
-  0% { transform: scale(0.28) rotate(-14deg) translateY(60px); border-radius: 46%; opacity: 0.5; }
-  45% { transform: scale(0.8) rotate(5deg) translateY(10px); border-radius: 14%; opacity: 1; }
-  75% { transform: scale(1.03) rotate(-1.5deg); border-radius: 6px; }
-  100% { transform: none; border-radius: 4px; }
-}
-
-.paper p {
-  font-family: var(--font-mano);
-  font-size: clamp(1.25rem, 3.4vw, 1.85rem);
-  line-height: 1.45;
-  margin-bottom: 0.9rem;
-  opacity: 0;
-  animation: tinta 0.7s ease-out forwards;
+  0% { transform: scale(0.28) rotate(-14deg) translateY(60px); opacity: 0.5; }
+  45% { transform: scale(0.8) rotate(5deg) translateY(10px); opacity: 1; }
+  75% { transform: scale(1.03) rotate(-1.5deg); }
+  100% { transform: none; }
 }
 
 @keyframes tinta {
   from { opacity: 0; transform: translateY(8px); filter: blur(4px); }
   to { opacity: 1; transform: none; filter: blur(0); }
-}
-
-.paper-sign {
-  display: block;
-  text-align: right;
-  font-family: var(--font-mano);
-  font-size: 1.4rem;
-  color: var(--atardecer);
-  opacity: 0;
-  animation: tinta 0.8s ease-out 3.1s forwards;
 }
 
 /* ---------- letra de la canción ---------- */
@@ -607,4 +568,20 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .fondo { animation: none; }
+}
+
+@media (max-width: 600px) {
+  .lienzo {
+    padding: 1.5rem 1rem 8.5rem;
+    gap: 0.75rem;
+  }
+
+  .etapa { gap: 0.55rem; }
+
+  .personaje-portada {
+    width: min(82vw, 25rem);
+    max-height: 40svh;
+  }
+
+  .creditos { bottom: 5.4rem; }
 }

@@ -5,7 +5,7 @@ import { LyricsBar } from "@/components/LyricsBar";
 import { Letter } from "@/components/Letter";
 import fondo from "@/assets/girasoles.asset.json";
 import cancion from "@/assets/girasol.mp3.asset.json";
-import florAsset from "@/assets/flor.png.asset.json";
+import personaje from "@/assets/personaje-ramo.png";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -22,19 +22,14 @@ export const Route = createFileRoute("/")({
         content:
           "Flores amarillas cayendo, una carta y una canción. Para ti, este 21 de septiembre.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Pagina,
 });
 
-const CARTA = [
-  "Feliz día de las flores amarillas :3",
-  "Quiero darte las gracias por estar ahí, por cada rato bonito y por seguir siendo parte de mis días.",
-  "Hoy quería desearte un día lindo, porque te lo mereces. Ojalá esta flor te saque aunque sea una sonrisita.",
-  "Me gusta que podamos seguir conociéndonos poco a poco, sin prisa. No sé qué pasará después, pero me gusta estar aquí para ti.",
-];
-
-const ETAPAS = 5;
+const ETAPAS = 3;
 
 function Pagina() {
   const [etapa, setEtapa] = useState(0);
@@ -61,6 +56,11 @@ function Pagina() {
     setEtapa((e) => Math.min(e + 1, ETAPAS - 1));
   };
 
+  const repetir = () => {
+    if (audioRef.current) audioRef.current.currentTime = 0;
+    setEtapa(0);
+  };
+
   return (
     <div className="escena">
       <div className="fondo" style={{ backgroundImage: `url(${fondo.url})` }} />
@@ -79,53 +79,31 @@ function Pagina() {
               <span className="titulo-amarillo">flores amarillas</span>
               <span className="titulo-carita">:3</span>
             </h1>
-            <img className="flor-portada" src={florAsset.url} alt="Flor amarilla en pixel art" />
-            <p className="sub">
-              Hice este lugar para ti. Sube el volumen, tómate tu tiempo y ve avanzando.
-            </p>
+            <img
+              className="personaje-portada"
+              src={personaje}
+              alt="Personaje sosteniendo un ramo de flores amarillas"
+            />
           </section>
         )}
 
         {etapa === 1 && (
           <section className="etapa">
-            <h2>Están cayendo flores para ti</h2>
-            <p className="sub">
-              Tócalas: se parten en dos, se marchitan y te dejan algo dicho.
-            </p>
-            <p className="susurro">
-              y si agitas el teléfono… caen muchas más 🌼
-            </p>
+            <h2>Te escribí algo</h2>
+            <Letter />
           </section>
         )}
 
         {etapa === 2 && (
-          <section className="etapa">
-            <h2>Antes de la carta</h2>
-            <p className="sub">
-              No te voy a apurar con nada. Solo quería que tuvieras un día bonito, y que
-              supieras que estoy aquí.
-            </p>
-            <p className="susurro">sigue tocando flores si quieres 🌻</p>
-          </section>
-        )}
-
-        {etapa === 3 && (
-          <section className="etapa">
-            <h2>Te escribí algo</h2>
-            <Letter texto={CARTA} />
-          </section>
-        )}
-
-        {etapa === 4 && (
           <section className="etapa etapa-final">
-            <h2>
-              te amo <span className="titulo-carita">🌻</span>
-            </h2>
-            <p className="sub">
-              Gracias por llegar hasta el final. Que tu día de las flores amarillas sea
-              como tú: bonito.
+            <h2>Feliz día, Key</h2>
+            <p className="mensaje-final">
+              Te amo aunque tú ya no me ames. Siempre estarás en mi corazón, y esto hace que
+              se disfrute el amor; de eso trata el amor. Te amo, adiós.
             </p>
-            <img className="flor-portada flor-final" src={florAsset.url} alt="" />
+            <button type="button" className="btn-siguiente" onClick={repetir}>
+              repetir <span className="flecha">--&gt;</span>
+            </button>
           </section>
         )}
 
@@ -140,6 +118,7 @@ function Pagina() {
             <span key={i} className={i <= etapa ? "paso on" : "paso"} />
           ))}
         </div>
+        <footer className="creditos">uknown creador: uknown</footer>
       </main>
 
       <LyricsBar audio={audioEl} />
