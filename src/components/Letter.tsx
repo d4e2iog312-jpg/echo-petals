@@ -1,9 +1,21 @@
 import { useState } from "react";
+import { X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import sobreAsset from "@/assets/sobre.png.asset.json";
-import cartaIlustrada from "@/assets/carta-ilustrada.png.asset.json";
+import cartaIlustrada from "@/assets/carta-ilustrada-final.png.asset.json";
 
-export function Letter() {
+export function Letter({ onClose }: { onClose: () => void }) {
   const [open, setOpen] = useState(false);
+  const [closing, setClosing] = useState(false);
+
+  const closeLetter = () => {
+    setClosing(true);
+    window.setTimeout(() => {
+      setOpen(false);
+      setClosing(false);
+      onClose();
+    }, 1400);
+  };
 
   return (
     <div className="letter-zone">
@@ -53,12 +65,17 @@ export function Letter() {
       )}
 
       {open && (
-        <div className="letter-open" key="carta-abierta">
-          <img
-            className="illustrated-letter"
-            src={cartaIlustrada.url}
-            alt="Carta ilustrada del Día de las Flores Amarillas"
-          />
+        <div className={`letter-overlay ${closing ? "carta-ceniza" : ""}`} key="carta-abierta">
+          <div className="letter-scroll">
+            <img
+              className="illustrated-letter"
+              src={cartaIlustrada.url}
+              alt="Carta ilustrada del Día de las Flores Amarillas"
+            />
+          </div>
+          <Button type="button" className="salir-carta" onClick={closeLetter}>
+            <X /> salir
+          </Button>
         </div>
       )}
     </div>

@@ -3,9 +3,14 @@ import { useEffect, useRef, useState } from "react";
 import { FlowerRain, pedirPermisoSacudida } from "@/components/FlowerRain";
 import { LyricsBar } from "@/components/LyricsBar";
 import { Letter } from "@/components/Letter";
+import { ClearFriends } from "@/components/ClearFriends";
+import { ScratchLetter } from "@/components/ScratchLetter";
+import { MusicLetter } from "@/components/MusicLetter";
+import { Button } from "@/components/ui/button";
 import fondo from "@/assets/girasoles.asset.json";
 import cancion from "@/assets/girasol.mp3.asset.json";
 import personaje from "@/assets/personaje-ramo.png";
+import finalYoshiki from "@/assets/final-yoshiki-claro.png.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -29,11 +34,14 @@ export const Route = createFileRoute("/")({
   component: Pagina,
 });
 
-const ETAPAS = 3;
+const ETAPAS = 6;
 
 function Pagina() {
   const [etapa, setEtapa] = useState(0);
   const [audioEl, setAudioEl] = useState<HTMLAudioElement | null>(null);
+  const [cartaCerrada, setCartaCerrada] = useState(false);
+  const [amigosListos, setAmigosListos] = useState(false);
+  const [rascaLista, setRascaLista] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // Intento de reproducción automática al abrir; si el navegador la bloquea,
@@ -58,13 +66,24 @@ function Pagina() {
 
   const repetir = () => {
     if (audioRef.current) audioRef.current.currentTime = 0;
+    setCartaCerrada(false);
+    setAmigosListos(false);
+    setRascaLista(false);
     setEtapa(0);
+  };
+
+  const controlarAudioEspecial = (playing: boolean) => {
+    const background = audioRef.current;
+    if (!background) return;
+    if (playing) background.pause();
+    else background.play().catch(() => {});
   };
 
   return (
     <div className="escena">
       <div className="fondo" style={{ backgroundImage: `url(${fondo.url})` }} />
       <div className="fondo-velo" />
+      {etapa === 5 && <div className="fondo-final" style={{ backgroundImage: `url(${finalYoshiki.url})` }} />}
 
       <audio ref={audioRef} src={cancion.url} loop preload="auto" playsInline />
 
@@ -90,27 +109,42 @@ function Pagina() {
         {etapa === 1 && (
           <section className="etapa">
             <h2>Te escribí algo</h2>
-            <Letter />
+            <Letter onClose={() => setCartaCerrada(true)} />
           </section>
         )}
 
         {etapa === 2 && (
+          <ClearFriends onComplete={() => setAmigosListos(true)} />
+        )}
+
+        {etapa === 3 && (
+          <ScratchLetter onComplete={() => setRascaLista(true)} />
+        )}
+
+        {etapa === 4 && (
+          <MusicLetter onPlayback={controlarAudioEspecial} />
+        )}
+
+        {etapa === 5 && (
           <section className="etapa etapa-final">
             <h2>Feliz día, Key</h2>
             <p className="mensaje-final">
               Te amo aunque tú ya no me ames. Siempre estarás en mi corazón, y esto hace que
-              se disfrute el amor; de eso trata el amor. Te amo, adiós.
+              se disfrute el amor; de eso trata el amor. Aunque ya te perdí del todo, siempre te
+              voy a amar. Prometí que tú serías mi última novia; si no eres tú, no es nadie. Te
+              extraño, aunque parece que ya estás siendo feliz con otro chico. Solo quería decirte
+              que me dolió hacer este sitio, pero te amo jsjsjs xd. Te amo, adiós.
             </p>
-            <button type="button" className="btn-siguiente" onClick={repetir}>
+            <Button type="button" className="btn-siguiente" onClick={repetir}>
               repetir <span className="flecha">--&gt;</span>
-            </button>
+            </Button>
           </section>
         )}
 
-        {etapa < ETAPAS - 1 && (
-          <button type="button" className="btn-siguiente" onClick={avanzar}>
+        {etapa < ETAPAS - 1 && (etapa !== 1 || cartaCerrada) && (etapa !== 2 || amigosListos) && (etapa !== 3 || rascaLista) && (
+          <Button type="button" className="btn-siguiente" onClick={avanzar}>
             siguiente <span className="flecha">--&gt;</span>
-          </button>
+          </Button>
         )}
 
         <div className="pasos" aria-hidden>
@@ -118,7 +152,7 @@ function Pagina() {
             <span key={i} className={i <= etapa ? "paso on" : "paso"} />
           ))}
         </div>
-        <footer className="creditos">uknown creador: uknown</footer>
+        <footer className="creditos">creador:over_lord.7</footer>
       </main>
 
       <LyricsBar audio={audioEl} />
