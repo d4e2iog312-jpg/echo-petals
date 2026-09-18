@@ -11,6 +11,7 @@ const STARTS = [
 
 export function ClearFriends({ onComplete }: { onComplete: () => void }) {
   const areaRef = useRef<HTMLDivElement>(null);
+  const draggingRef = useRef<number | null>(null);
   const [friends, setFriends] = useState<Friend[]>(() =>
     STARTS.map(([x, y], id) => ({
       id,
@@ -34,12 +35,13 @@ export function ClearFriends({ onComplete }: { onComplete: () => void }) {
   };
 
   const move = (event: React.PointerEvent<HTMLImageElement>, id: number) => {
-    if (dragging !== id || !areaRef.current) return;
+    if (draggingRef.current !== id || !areaRef.current) return;
     const rect = areaRef.current.getBoundingClientRect();
     const x = ((event.clientX - rect.left) / rect.width) * 100;
     const y = ((event.clientY - rect.top) / rect.height) * 100;
     if (x < 9 || x > 91 || y < 9 || y > 91) {
       absorb(id);
+      draggingRef.current = null;
       setDragging(null);
       return;
     }
@@ -48,6 +50,7 @@ export function ClearFriends({ onComplete }: { onComplete: () => void }) {
 
   const release = (event: React.PointerEvent<HTMLImageElement>, id: number) => {
     event.currentTarget.releasePointerCapture(event.pointerId);
+    draggingRef.current = null;
     setDragging(null);
     if (!areaRef.current) return;
     const rect = areaRef.current.getBoundingClientRect();
@@ -81,6 +84,7 @@ export function ClearFriends({ onComplete }: { onComplete: () => void }) {
             style={{ left: `${friend.x}%`, top: `${friend.y}%`, rotate: `${friend.angle}deg` }}
             onPointerDown={(event) => {
               event.currentTarget.setPointerCapture(event.pointerId);
+              draggingRef.current = friend.id;
               setDragging(friend.id);
             }}
             onPointerMove={(event) => move(event, friend.id)}
