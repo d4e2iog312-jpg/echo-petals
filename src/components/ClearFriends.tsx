@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import alegre from "@/assets/amigo-alegre.png.asset.json";
 import timido from "@/assets/amigo-timido.png.asset.json";
 
@@ -64,6 +64,34 @@ export function ClearFriends({ onComplete }: { onComplete: () => void }) {
       absorb(id);
     }
   };
+
+  useEffect(() => {
+    const moveAnywhere = (event: PointerEvent) => {
+      const id = draggingRef.current;
+      const area = areaRef.current;
+      if (id === null || !area) return;
+      const rect = area.getBoundingClientRect();
+      const x = ((event.clientX - rect.left) / rect.width) * 100;
+      const y = ((event.clientY - rect.top) / rect.height) * 100;
+      if (x < 9 || x > 91 || y < 9 || y > 91) {
+        absorb(id);
+        draggingRef.current = null;
+        setDragging(null);
+        return;
+      }
+      setFriends((items) => items.map((item) => item.id === id ? { ...item, x, y } : item));
+    };
+    const releaseAnywhere = () => {
+      draggingRef.current = null;
+      setDragging(null);
+    };
+    window.addEventListener("pointermove", moveAnywhere);
+    window.addEventListener("pointerup", releaseAnywhere);
+    return () => {
+      window.removeEventListener("pointermove", moveAnywhere);
+      window.removeEventListener("pointerup", releaseAnywhere);
+    };
+  }, []);
 
   return (
     <section className="etapa etapa-limpieza">
