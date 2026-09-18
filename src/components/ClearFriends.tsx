@@ -24,11 +24,25 @@ export function ClearFriends({ onComplete }: { onComplete: () => void }) {
   const remaining = friends.length;
   const label = useMemo(() => `${remaining} por guardar`, [remaining]);
 
+  const absorb = (id: number) => {
+    setFriends((items) => {
+      if (!items.some((item) => item.id === id)) return items;
+      const next = items.filter((item) => item.id !== id);
+      if (next.length === 0) window.setTimeout(onComplete, 700);
+      return next;
+    });
+  };
+
   const move = (event: React.PointerEvent<HTMLImageElement>, id: number) => {
     if (dragging !== id || !areaRef.current) return;
     const rect = areaRef.current.getBoundingClientRect();
     const x = ((event.clientX - rect.left) / rect.width) * 100;
     const y = ((event.clientY - rect.top) / rect.height) * 100;
+    if (x < 9 || x > 91 || y < 9 || y > 91) {
+      absorb(id);
+      setDragging(null);
+      return;
+    }
     setFriends((items) => items.map((item) => item.id === id ? { ...item, x, y } : item));
   };
 
@@ -44,11 +58,7 @@ export function ClearFriends({ onComplete }: { onComplete: () => void }) {
       rect.bottom - event.clientY,
     );
     if (edge < Math.min(72, rect.width * 0.14)) {
-      setFriends((items) => {
-        const next = items.filter((item) => item.id !== id);
-        if (next.length === 0) window.setTimeout(onComplete, 700);
-        return next;
-      });
+      absorb(id);
     }
   };
 
