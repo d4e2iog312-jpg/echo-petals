@@ -117,6 +117,7 @@ export function ClearFriends({ onComplete }: { onComplete: () => void }) {
             }}
             onPointerMove={(event) => move(event, friend.id)}
             onPointerUp={(event) => release(event, friend.id)}
+            onDoubleClick={() => absorb(friend.id)}
           />
         ))}
         {remaining === 0 && <p className="limpieza-lista">Todo despejado :3</p>}
