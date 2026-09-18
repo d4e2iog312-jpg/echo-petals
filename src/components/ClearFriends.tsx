@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import alegre from "@/assets/amigo-alegre.png.asset.json";
 import timido from "@/assets/amigo-timido.png.asset.json";
 
@@ -11,6 +11,7 @@ const STARTS = [
 
 export function ClearFriends({ onComplete }: { onComplete: () => void }) {
   const areaRef = useRef<HTMLDivElement>(null);
+  const draggingRef = useRef<number | null>(null);
   const [friends, setFriends] = useState<Friend[]>(() =>
     STARTS.map(([x, y], id) => ({
       id,
@@ -24,16 +25,32 @@ export function ClearFriends({ onComplete }: { onComplete: () => void }) {
   const remaining = friends.length;
   const label = useMemo(() => `${remaining} por guardar`, [remaining]);
 
+  const absorb = (id: number) => {
+    setFriends((items) => {
+      if (!items.some((item) => item.id === id)) return items;
+      const next = items.filter((item) => item.id !== id);
+      if (next.length === 0) window.setTimeout(onComplete, 700);
+      return next;
+    });
+  };
+
   const move = (event: React.PointerEvent<HTMLImageElement>, id: number) => {
-    if (dragging !== id || !areaRef.current) return;
+    if (draggingRef.current !== id || !areaRef.current) return;
     const rect = areaRef.current.getBoundingClientRect();
     const x = ((event.clientX - rect.left) / rect.width) * 100;
     const y = ((event.clientY - rect.top) / rect.height) * 100;
+    if (x < 9 || x > 91 || y < 9 || y > 91) {
+      absorb(id);
+      draggingRef.current = null;
+      setDragging(null);
+      return;
+    }
     setFriends((items) => items.map((item) => item.id === id ? { ...item, x, y } : item));
   };
 
   const release = (event: React.PointerEvent<HTMLImageElement>, id: number) => {
     event.currentTarget.releasePointerCapture(event.pointerId);
+    draggingRef.current = null;
     setDragging(null);
     if (!areaRef.current) return;
     const rect = areaRef.current.getBoundingClientRect();
@@ -44,13 +61,37 @@ export function ClearFriends({ onComplete }: { onComplete: () => void }) {
       rect.bottom - event.clientY,
     );
     if (edge < Math.min(72, rect.width * 0.14)) {
-      setFriends((items) => {
-        const next = items.filter((item) => item.id !== id);
-        if (next.length === 0) window.setTimeout(onComplete, 700);
-        return next;
-      });
+      absorb(id);
     }
   };
+
+  useEffect(() => {
+    const moveAnywhere = (event: PointerEvent) => {
+      const id = draggingRef.current;
+      const area = areaRef.current;
+      if (id === null || !area) return;
+      const rect = area.getBoundingClientRect();
+      const x = ((event.clientX - rect.left) / rect.width) * 100;
+      const y = ((event.clientY - rect.top) / rect.height) * 100;
+      if (x < 9 || x > 91 || y < 9 || y > 91) {
+        absorb(id);
+        draggingRef.current = null;
+        setDragging(null);
+        return;
+      }
+      setFriends((items) => items.map((item) => item.id === id ? { ...item, x, y } : item));
+    };
+    const releaseAnywhere = () => {
+      draggingRef.current = null;
+      setDragging(null);
+    };
+    window.addEventListener("pointermove", moveAnywhere);
+    window.addEventListener("pointerup", releaseAnywhere);
+    return () => {
+      window.removeEventListener("pointermove", moveAnywhere);
+      window.removeEventListener("pointerup", releaseAnywhere);
+    };
+  }, []);
 
   return (
     <section className="etapa etapa-limpieza">
@@ -71,10 +112,12 @@ export function ClearFriends({ onComplete }: { onComplete: () => void }) {
             style={{ left: `${friend.x}%`, top: `${friend.y}%`, rotate: `${friend.angle}deg` }}
             onPointerDown={(event) => {
               event.currentTarget.setPointerCapture(event.pointerId);
+              draggingRef.current = friend.id;
               setDragging(friend.id);
             }}
             onPointerMove={(event) => move(event, friend.id)}
             onPointerUp={(event) => release(event, friend.id)}
+            onDoubleClick={() => absorb(friend.id)}
           />
         ))}
         {remaining === 0 && <p className="limpieza-lista">Todo despejado :3</p>}
