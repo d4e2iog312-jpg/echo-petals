@@ -1,126 +1,75 @@
-import { useEffect, useMemo, useRef, useState } from "react";
-import alegre from "@/assets/amigo-alegre.png.asset.json";
-import timido from "@/assets/amigo-timido.png.asset.json";
+import { useMemo, useRef, useState } from "react";
+import claro from "@/assets/chico-pelo-blanco.jpg.asset.json";
+import oscuro from "@/assets/chico-pelo-negro.jpg.asset.json";
+import flor from "@/assets/flor.png.asset.json";
 
 type Friend = { id: number; src: string; x: number; y: number; angle: number };
 
 const STARTS = [
-  [8, 12], [38, 6], [69, 10], [16, 34], [58, 30],
-  [3, 58], [38, 55], [72, 54], [18, 76], [61, 76],
+  [12, 18], [31, 11], [52, 18], [75, 12], [89, 28],
+  [16, 50], [39, 43], [65, 51], [29, 76], [76, 75],
 ];
 
-export function ClearFriends({ onComplete }: { onComplete: () => void }) {
+export function ClearFriends() {
   const areaRef = useRef<HTMLDivElement>(null);
   const draggingRef = useRef<number | null>(null);
+  const [dragging, setDragging] = useState<number | null>(null);
   const [friends, setFriends] = useState<Friend[]>(() =>
     STARTS.map(([x, y], id) => ({
       id,
       x: x ?? 0,
       y: y ?? 0,
-      angle: (id % 2 ? 1 : -1) * (3 + (id % 3) * 3),
-      src: id % 2 ? timido.url : alegre.url,
+      angle: (Math.random() - 0.5) * 12,
+      src: Math.random() > 0.5 ? claro.url : oscuro.url,
     })),
   );
-  const [dragging, setDragging] = useState<number | null>(null);
-  const remaining = friends.length;
-  const label = useMemo(() => `${remaining} por guardar`, [remaining]);
+  const decorativeFlowers = useMemo(() => [
+    { left: "3%", top: "4%", rotate: "-14deg" },
+    { right: "4%", bottom: "5%", rotate: "17deg" },
+  ], []);
 
-  const absorb = (id: number) => {
-    setFriends((items) => {
-      if (!items.some((item) => item.id === id)) return items;
-      const next = items.filter((item) => item.id !== id);
-      if (next.length === 0) window.setTimeout(onComplete, 700);
-      return next;
-    });
-  };
-
-  const move = (event: React.PointerEvent<HTMLImageElement>, id: number) => {
-    if (draggingRef.current !== id || !areaRef.current) return;
-    const rect = areaRef.current.getBoundingClientRect();
-    const x = ((event.clientX - rect.left) / rect.width) * 100;
-    const y = ((event.clientY - rect.top) / rect.height) * 100;
-    if (x < 9 || x > 91 || y < 9 || y > 91) {
-      absorb(id);
-      draggingRef.current = null;
-      setDragging(null);
-      return;
-    }
+  const move = (clientX: number, clientY: number, id: number) => {
+    const area = areaRef.current;
+    if (!area || draggingRef.current !== id) return;
+    const rect = area.getBoundingClientRect();
+    const x = Math.max(4, Math.min(96, ((clientX - rect.left) / rect.width) * 100));
+    const y = Math.max(6, Math.min(94, ((clientY - rect.top) / rect.height) * 100));
     setFriends((items) => items.map((item) => item.id === id ? { ...item, x, y } : item));
   };
 
-  const release = (event: React.PointerEvent<HTMLImageElement>, id: number) => {
-    event.currentTarget.releasePointerCapture(event.pointerId);
+  const release = (event: React.PointerEvent<HTMLImageElement>) => {
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
     draggingRef.current = null;
     setDragging(null);
-    if (!areaRef.current) return;
-    const rect = areaRef.current.getBoundingClientRect();
-    const edge = Math.min(
-      event.clientX - rect.left,
-      rect.right - event.clientX,
-      event.clientY - rect.top,
-      rect.bottom - event.clientY,
-    );
-    if (edge < Math.min(72, rect.width * 0.14)) {
-      absorb(id);
-    }
   };
-
-  useEffect(() => {
-    const moveAnywhere = (event: PointerEvent) => {
-      const id = draggingRef.current;
-      const area = areaRef.current;
-      if (id === null || !area) return;
-      const rect = area.getBoundingClientRect();
-      const x = ((event.clientX - rect.left) / rect.width) * 100;
-      const y = ((event.clientY - rect.top) / rect.height) * 100;
-      if (x < 9 || x > 91 || y < 9 || y > 91) {
-        absorb(id);
-        draggingRef.current = null;
-        setDragging(null);
-        return;
-      }
-      setFriends((items) => items.map((item) => item.id === id ? { ...item, x, y } : item));
-    };
-    const releaseAnywhere = () => {
-      draggingRef.current = null;
-      setDragging(null);
-    };
-    window.addEventListener("pointermove", moveAnywhere);
-    window.addEventListener("pointerup", releaseAnywhere);
-    return () => {
-      window.removeEventListener("pointermove", moveAnywhere);
-      window.removeEventListener("pointerup", releaseAnywhere);
-    };
-  }, []);
 
   return (
     <section className="etapa etapa-limpieza">
-      <div className="limpieza-copy">
-        <p className="kicker">un pequeño caos</p>
-        <h2>Guarda a estos amiguitos</h2>
-        <p className="sub">Llévalos hasta cualquier borde.</p>
-        <span className="contador-amigos" aria-live="polite">{label}</span>
-      </div>
-      <div ref={areaRef} className={`amigos-area ${remaining === 0 ? "limpia" : ""}`}>
-        <div className="borde-succion" aria-hidden />
+      <div ref={areaRef} className="amigos-area">
+        {decorativeFlowers.map((position, index) => (
+          <img key={index} className="flor-amigos" src={flor.url} alt="" style={position} />
+        ))}
         {friends.map((friend) => (
           <img
             key={friend.id}
             src={friend.src}
-            alt="Amiguito dibujado para guardar"
+            alt={friend.src === claro.url ? "Mini dibujo de chico de pelo claro" : "Mini dibujo de chico de pelo negro"}
+            draggable={false}
             className={`amiguito ${dragging === friend.id ? "arrastrando" : ""}`}
             style={{ left: `${friend.x}%`, top: `${friend.y}%`, rotate: `${friend.angle}deg` }}
             onPointerDown={(event) => {
+              event.preventDefault();
               event.currentTarget.setPointerCapture(event.pointerId);
               draggingRef.current = friend.id;
               setDragging(friend.id);
             }}
-            onPointerMove={(event) => move(event, friend.id)}
-            onPointerUp={(event) => release(event, friend.id)}
-            onDoubleClick={() => absorb(friend.id)}
+            onPointerMove={(event) => move(event.clientX, event.clientY, friend.id)}
+            onPointerUp={release}
+            onPointerCancel={release}
           />
         ))}
-        {remaining === 0 && <p className="limpieza-lista">Todo despejado :3</p>}
       </div>
     </section>
   );
