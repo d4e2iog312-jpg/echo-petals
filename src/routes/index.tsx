@@ -40,7 +40,6 @@ function Pagina() {
   const [etapa, setEtapa] = useState(0);
   const [audioEl, setAudioEl] = useState<HTMLAudioElement | null>(null);
   const [cartaCerrada, setCartaCerrada] = useState(false);
-  const [amigosListos, setAmigosListos] = useState(false);
   const [rascaLista, setRascaLista] = useState(false);
   const [mensajePropio, setMensajePropio] = useState("");
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -68,7 +67,6 @@ function Pagina() {
   const repetir = () => {
     if (audioRef.current) audioRef.current.currentTime = 0;
     setCartaCerrada(false);
-    setAmigosListos(false);
     setRascaLista(false);
     setEtapa(0);
   };
