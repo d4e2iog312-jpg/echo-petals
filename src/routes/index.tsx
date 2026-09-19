@@ -34,14 +34,14 @@ export const Route = createFileRoute("/")({
   component: Pagina,
 });
 
-const ETAPAS = 6;
+const ETAPAS = 7;
 
 function Pagina() {
   const [etapa, setEtapa] = useState(0);
   const [audioEl, setAudioEl] = useState<HTMLAudioElement | null>(null);
   const [cartaCerrada, setCartaCerrada] = useState(false);
-  const [amigosListos, setAmigosListos] = useState(false);
   const [rascaLista, setRascaLista] = useState(false);
+  const [mensajePropio, setMensajePropio] = useState("");
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // Intento de reproducción automática al abrir; si el navegador la bloquea,
@@ -67,7 +67,6 @@ function Pagina() {
   const repetir = () => {
     if (audioRef.current) audioRef.current.currentTime = 0;
     setCartaCerrada(false);
-    setAmigosListos(false);
     setRascaLista(false);
     setEtapa(0);
   };
@@ -83,11 +82,11 @@ function Pagina() {
     <div className="escena">
       <div className="fondo" style={{ backgroundImage: `url(${fondo.url})` }} />
       <div className="fondo-velo" />
-      {etapa === 5 && <div className="fondo-final" style={{ backgroundImage: `url(${finalYoshiki.url})` }} />}
+      {etapa === 6 && <div className="fondo-final" style={{ backgroundImage: `url(${finalYoshiki.url})` }} />}
 
       <audio ref={audioRef} src={cancion.url} loop preload="auto" playsInline />
 
-      <FlowerRain active={etapa >= 1} />
+      <FlowerRain active={etapa >= 1 && etapa !== 3} />
 
       <main className="lienzo">
         {etapa === 0 && (
@@ -107,25 +106,37 @@ function Pagina() {
         )}
 
         {etapa === 1 && (
+          <section className="etapa etapa-mensaje-propio">
+            <label htmlFor="mensaje-key">Para Key</label>
+            <textarea
+              id="mensaje-key"
+              value={mensajePropio}
+              onChange={(event) => setMensajePropio(event.target.value)}
+              aria-label="Mensaje para Key"
+            />
+          </section>
+        )}
+
+        {etapa === 2 && (
           <section className="etapa">
             <h2>Te escribí algo</h2>
             <Letter onClose={() => setCartaCerrada(true)} />
           </section>
         )}
 
-        {etapa === 2 && (
-          <ClearFriends onComplete={() => setAmigosListos(true)} />
-        )}
-
         {etapa === 3 && (
-          <ScratchLetter onComplete={() => setRascaLista(true)} />
+          <ClearFriends />
         )}
 
         {etapa === 4 && (
-          <MusicLetter onPlayback={controlarAudioEspecial} />
+          <ScratchLetter onComplete={() => setRascaLista(true)} />
         )}
 
         {etapa === 5 && (
+          <MusicLetter onPlayback={controlarAudioEspecial} />
+        )}
+
+        {etapa === 6 && (
           <section className="etapa etapa-final">
             <h2>Feliz día, Key</h2>
             <p className="mensaje-final">
@@ -141,7 +152,7 @@ function Pagina() {
           </section>
         )}
 
-        {etapa < ETAPAS - 1 && (etapa !== 1 || cartaCerrada) && (etapa !== 2 || amigosListos) && (etapa !== 3 || rascaLista) && (
+        {etapa < ETAPAS - 1 && (etapa !== 2 || cartaCerrada) && (etapa !== 4 || rascaLista) && (
           <Button type="button" className="btn-siguiente" onClick={avanzar}>
             siguiente <span className="flecha">--&gt;</span>
           </Button>
