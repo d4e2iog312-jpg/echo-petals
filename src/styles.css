@@ -690,6 +690,33 @@ body {
 .rasca-amiguito.izquierdo { background-position: left center; }
 .rasca-amiguito.derecho { background-position: right center; }
 .rasca-amiguito:active { transform: translate(-50%, -50%) scale(0.92); }
+.rasca-amiguito::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  background-position: center;
+  background-size: 100% 100%;
+  clip-path: inset(0 0 0 50%);
+  opacity: 0;
+}
+.rasca-amiguito.rompiendo {
+  pointer-events: none;
+  clip-path: inset(0 50% 0 0);
+  animation: romper-mitad-izquierda 650ms ease-in forwards;
+}
+.rasca-amiguito.rompiendo::after {
+  opacity: 1;
+  animation: romper-mitad-derecha 650ms ease-in forwards;
+}
+@keyframes romper-mitad-izquierda {
+  0% { opacity: 1; transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+  100% { opacity: 0; transform: translate(-105%, -70%) rotate(-24deg) scale(.35); }
+}
+@keyframes romper-mitad-derecha {
+  0% { opacity: 1; transform: translate(0, 0) rotate(0deg) scale(1); }
+  100% { opacity: 0; transform: translate(105%, -70%) rotate(24deg) scale(.35); }
+}
 .rasca-amiguito ~ .rasca-marco { z-index: 2; }
 
 /* ---------- carta musical ---------- */
