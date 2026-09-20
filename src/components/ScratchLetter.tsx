@@ -1,22 +1,21 @@
 import { useEffect, useRef, useState } from "react";
 import cartaRasca from "@/assets/carta-rasca.png.asset.json";
-import alegre from "@/assets/amigo-alegre-limpio.png.asset.json";
-import timido from "@/assets/amigo-timido-limpio.png.asset.json";
+const muñecosKey = "/assets/muñecos-key.jpeg";
 
-type Friend = { id: number; src: string; x: number; y: number; angle: number };
-const STARTS = [[32, 28], [68, 28]];
+type Friend = { id: number; side: "izquierdo" | "derecho"; x: number; y: number; angle: number };
+const STARTS: Friend[] = [
+  { id: 0, side: "izquierdo", x: 16, y: 22, angle: -4 },
+  { id: 1, side: "derecho", x: 50, y: 20, angle: 3 },
+  { id: 2, side: "izquierdo", x: 82, y: 25, angle: -2 },
+  { id: 3, side: "derecho", x: 30, y: 70, angle: 3 },
+  { id: 4, side: "izquierdo", x: 68, y: 72, angle: -3 },
+];
 
 export function ScratchLetter({ onComplete }: { onComplete: () => void }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const areaRef = useRef<HTMLDivElement>(null);
   const strokes = useRef(0);
-  const [friends, setFriends] = useState<Friend[]>(() => STARTS.map(([x, y], id) => ({
-    id,
-    x: x ?? 0,
-    y: y ?? 0,
-    angle: (id % 2 ? 1 : -1) * (3 + (id % 3) * 3),
-    src: id % 2 ? timido.url : alegre.url,
-  })));
+  const [friends, setFriends] = useState<Friend[]>(STARTS);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -55,7 +54,19 @@ export function ScratchLetter({ onComplete }: { onComplete: () => void }) {
     <section className="etapa etapa-rasca">
       <div ref={areaRef} className="rasca-area">
         {friends.map((friend) => (
-          <img key={friend.id} src={friend.src} alt="Personaje dibujado" className="rasca-amiguito" style={{ left: `${friend.x}%`, top: `${friend.y}%`, rotate: `${friend.angle}deg` }} onPointerDown={() => removeFriend(friend.id)} draggable={false} />
+          <button
+            key={friend.id}
+            type="button"
+            aria-label="Quitar personaje"
+            className={`rasca-amiguito ${friend.side}`}
+            style={{
+              left: `${friend.x}%`,
+              top: `${friend.y}%`,
+              rotate: `${friend.angle}deg`,
+              backgroundImage: `url("${muñecosKey}")`,
+            }}
+            onClick={() => removeFriend(friend.id)}
+          />
         ))}
         <div className="rasca-marco">
           <img src={cartaRasca.url} alt="Carta ilustrada para Key" />
