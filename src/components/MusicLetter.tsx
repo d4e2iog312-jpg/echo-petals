@@ -37,6 +37,8 @@ export function MusicLetter({ onPlayback }: { onPlayback: (playing: boolean) => 
     return current;
   }, [time]);
 
+  const progressPercent = duration > 0 ? (time / duration) * 100 : 0;
+
   useEffect(() => () => audioRef.current?.pause(), []);
 
   const setPlayingState = (nextPlaying: boolean) => {
@@ -77,7 +79,7 @@ export function MusicLetter({ onPlayback }: { onPlayback: (playing: boolean) => 
 
   return (
     <section className="etapa etapa-musical">
-      <div className="carta-musical-wrap">
+      <div className={`carta-musical-wrap ${playing ? "audio-activo" : ""}`}>
         <img src="/assets/carta-ilustrada-key.jpeg" alt="Carta ilustrada My Last Love para Key" />
         <audio
           ref={audioRef}
@@ -94,6 +96,8 @@ export function MusicLetter({ onPlayback }: { onPlayback: (playing: boolean) => 
         />
         <button type="button" className="spotify-card-overlay" onClick={() => togglePlayback("spotify")} aria-label={playing && currentTrack === "spotify" ? "Pausar 505" : "Reproducir 505"}>
           <span className="sr-only">{playing && currentTrack === "spotify" ? "Pausar 505" : "Reproducir 505"}</span>
+          <span className="spotify-progress-live" aria-hidden="true"><span style={{ width: `${progressPercent}%` }} /></span>
+          <span className="spotify-time-live" aria-hidden="true">{formatTime(time)} / {formatTime(duration)}</span>
           <span className="spotify-live-lyrics" aria-live="polite">
             <span className="spotify-live-lyrics-track" style={{ transform: `translateY(-${Math.max(0, lyricIndex - 1) * 1.2}rem)` }}>
               {LYRICS.map((line, index) => <span key={line.at} className={index === lyricIndex ? "is-current" : ""}>{line.text}</span>)}

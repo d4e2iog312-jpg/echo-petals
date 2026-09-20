@@ -695,16 +695,25 @@ body {
 /* ---------- carta musical ---------- */
 .etapa-musical { width: min(100%, 78rem); padding-bottom: 1rem; }
 .carta-musical-wrap { position: relative; width: min(96vw, 64rem); margin: 0 auto; }
-.carta-musical-wrap > img { display: block; width: 100%; height: auto; max-height: 88svh; object-fit: contain; box-shadow: 0 20px 50px oklch(0.05 0 0 / 0.72); }
+.carta-musical-wrap > img { display: block; width: 100%; height: auto; max-height: 88svh; object-fit: contain; box-shadow: 0 20px 50px oklch(0.05 0 0 / 0.72); transition: transform .45s ease, filter .45s ease; }
+.carta-musical-wrap.audio-activo > img { animation: carta-respira 1.8s ease-in-out infinite; filter: brightness(1.02) contrast(1.02); }
+.carta-musical-wrap.audio-activo::after { content: ""; position: absolute; inset: .4%; pointer-events: none; border: 1px solid oklch(.95 .08 85 / .28); box-shadow: 0 0 24px oklch(.8 .12 75 / .18); animation: borde-musical 1.8s ease-in-out infinite; }
+@keyframes carta-respira { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-1px) scale(1.002); } }
+@keyframes borde-musical { 0%, 100% { opacity: .25; } 50% { opacity: .85; } }
 .audios-flotantes { position: absolute; inset: 0; pointer-events: none; z-index: 50; }
 .controles-integrados { position: absolute; inset: 0; pointer-events: none; }
 .control-imagen { position: absolute; display: block; border: 0; padding: 0; background: transparent; opacity: 0; cursor: pointer; pointer-events: auto; z-index: 50; touch-action: manipulation; }
 .control-imagen:focus-visible { outline: 2px solid var(--sol); outline-offset: 2px; }
 .control-barra-1 { left: 2%; top: 58%; width: 45%; height: 8%; }
 .control-barra-2 { left: 2%; top: 78%; width: 45%; height: 8%; }
+.carta-musical-wrap.audio-activo .control-barra-1::after, .carta-musical-wrap.audio-activo .control-barra-2::after { content: ""; position: absolute; inset: 35% 80% 35% 0; border-radius: 999px; background: var(--sol); opacity: .18; animation: onda-overlay 850ms ease-in-out infinite; }
+@keyframes onda-overlay { 0%, 100% { transform: scaleX(.35); opacity: .08; } 50% { transform: scaleX(1); opacity: .32; } }
 .control-spotify { left: 66%; top: 3%; width: 31%; height: 16%; }
 .spotify-card-overlay { position: absolute; z-index: 50; top: 9%; right: 4%; width: 31%; height: 28%; padding: 0; border: 0; background: transparent; cursor: pointer; pointer-events: auto; }
 .spotify-card-overlay:focus-visible, .control-imagen:focus-visible { outline: 2px solid var(--sol); outline-offset: 2px; }
+.spotify-progress-live { position: absolute; left: 10%; right: 10%; top: 30%; height: .2rem; overflow: hidden; border-radius: 999px; background: oklch(.95 .01 85 / .28); pointer-events: none; }
+.spotify-progress-live span { display: block; height: 100%; border-radius: inherit; background: var(--sol); transition: width .2s linear; }
+.spotify-time-live { position: absolute; right: 9%; top: 23%; color: oklch(.96 .01 85 / .7); font: .52rem/1 var(--font-mano); pointer-events: none; }
 .spotify-live-lyrics { position: absolute; inset: 34% 8% 8%; overflow: hidden; opacity: 1; color: var(--sol); font: .72rem/1.2 var(--font-mano); text-align: left; pointer-events: none; }
 .spotify-live-lyrics-track { display: grid; transition: transform .45s cubic-bezier(.22,.61,.36,1); }
 .spotify-live-lyrics-track span { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
