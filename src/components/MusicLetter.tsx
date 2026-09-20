@@ -81,6 +81,7 @@ export function MusicLetter({ onPlayback }: { onPlayback: (playing: boolean) => 
 
   return (
     <section className="etapa etapa-musical">
+      <p className="audio-instruction">Toca la barra de audio de cada una</p>
       <div className={`carta-musical-wrap ${playing ? "audio-activo" : ""}`}>
         <img src="/assets/carta-ilustrada-key.jpeg" alt="Carta ilustrada My Last Love para Key" />
         <audio

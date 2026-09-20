@@ -694,6 +694,7 @@ body {
 
 /* ---------- carta musical ---------- */
 .etapa-musical { width: min(100%, 78rem); padding-bottom: 1rem; }
+.audio-instruction { margin: 0 auto .55rem; color: oklch(.92 .02 85 / .72); font: .68rem/1.2 var(--font-mano); letter-spacing: .04em; text-align: center; }
 .carta-musical-wrap { position: relative; width: min(96vw, 64rem); margin: 0 auto; }
 .carta-musical-wrap > img { display: block; width: 100%; height: auto; max-height: 88svh; object-fit: contain; box-shadow: 0 20px 50px oklch(0.05 0 0 / 0.72); transition: transform .45s ease, filter .45s ease; }
 .carta-musical-wrap.audio-activo > img { animation: carta-respira 1.8s ease-in-out infinite; filter: brightness(1.02) contrast(1.02); }
