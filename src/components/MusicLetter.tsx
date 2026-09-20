@@ -12,8 +12,10 @@ const LYRICS = [
   { at: 8, text: "If it's a seven hour flight or a forty-five minute drive" },
   { at: 17, text: "In my imagination, you're waiting lying on your side" },
   { at: 27, text: "With your hands between your thighs" },
-  { at: 37, text: "Stop and wait a sec" },
-  { at: 45, text: "When you say you want to" },
+  { at: 37, text: "But I crumble completely when you cry" },
+  { at: 47, text: "It seems like once again you've had to greet me with goodbye" },
+  { at: 60, text: "I'm always just about to go and spoil the surprise" },
+  { at: 72, text: "And I'll waste the night" },
 ];
 
 const formatTime = (seconds: number) => {
