@@ -673,15 +673,22 @@ body {
 .rasca-amiguito {
   position: absolute;
   z-index: 3;
-  width: clamp(3.3rem, 9vw, 6rem);
-  height: clamp(4.2rem, 12vw, 7.4rem);
-  object-fit: contain;
+  width: clamp(4.8rem, 18vw, 8rem);
+  height: clamp(6rem, 24vw, 10rem);
+  padding: 0;
+  border: 0;
   transform: translate(-50%, -50%);
+  background-repeat: no-repeat;
+  background-size: 200% 100%;
+  background-color: transparent;
+  mix-blend-mode: multiply;
   filter: drop-shadow(0 4px 5px oklch(0.1 0 0 / 0.42));
   cursor: pointer;
   touch-action: manipulation;
   user-select: none;
 }
+.rasca-amiguito.izquierdo { background-position: left center; }
+.rasca-amiguito.derecho { background-position: right center; }
 .rasca-amiguito:active { transform: translate(-50%, -50%) scale(0.92); }
 .rasca-amiguito ~ .rasca-marco { z-index: 2; }
 
