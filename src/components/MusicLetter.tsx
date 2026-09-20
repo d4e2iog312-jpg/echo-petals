@@ -70,12 +70,21 @@ export function MusicLetter({ onPlayback }: { onPlayback: (playing: boolean) => 
             setTime(0);
           }}
         />
-        <div className="audios-flotantes">
-          <div className="controles-integrados" aria-label="Controles integrados de 505">
+        <div className="spotify-player" aria-label="Reproductor de 505 de Arctic Monkeys">
+          <button type="button" className="spotify-play" onClick={togglePlayback} aria-label={playing ? "Pausar 505" : "Reproducir 505"}>
+            <span aria-hidden="true">{playing ? "❚❚" : "▶"}</span>
+          </button>
+          <div className="spotify-details">
+            <div className="spotify-track"><strong>{TRACK.title}</strong><span> · {TRACK.artist}</span><time>{formatTime(time)} / {formatTime(duration)}</time></div>
+            <input className="spotify-progress" aria-label="Progreso de 505" type="range" min="0" max={duration || 1} value={Math.min(time, duration || 1)} onChange={(event) => { if (audioRef.current) { audioRef.current.currentTime = Number(event.target.value); setTime(Number(event.target.value)); } }} />
+            <div className="spotify-lyric" aria-live="polite">{LYRICS[lyricIndex]?.text}</div>
+          </div>
+        </div>
+        <div className="audios-flotantes" aria-label="Botones de audio dibujados en la carta">
+          <div className="controles-integrados">
             <button type="button" className="control-imagen control-barra-1" onClick={togglePlayback} aria-label={playing ? "Pausar 505 desde la primera barra" : "Reproducir 505 desde la primera barra"} />
             <button type="button" className="control-imagen control-barra-2" onClick={togglePlayback} aria-label={playing ? "Pausar 505 desde la segunda barra" : "Reproducir 505 desde la segunda barra"} />
-            <button type="button" className="control-imagen control-spotify" onClick={togglePlayback} aria-label={playing ? "Pausar 505 desde Spotify" : "Reproducir 505 desde Spotify"} />
-            <button type="button" className="control-imagen control-letra" onClick={togglePlayback} aria-label={playing ? "Pausar 505 desde la tarjeta de letra" : "Reproducir 505 desde la tarjeta de letra"} />
+            <button type="button" className="control-imagen control-spotify" onClick={togglePlayback} aria-label={playing ? "Pausar 505 desde el reproductor Spotify" : "Reproducir 505 desde el reproductor Spotify"} />
           </div>
         </div>
       </div>
