@@ -7,7 +7,7 @@ import audioChachacha from "@/assets/chachacha.mp3.asset.json";
 import audioLove from "@/assets/my-one-and-only-love.mp3.asset.json";
 
 const TRACKS = [
-  { title: "505", artist: "Arctic Monkeys", src: audio505.url, spotify: "https://open.spotify.com/track/58ge6dfP91o9oXMzq3XkIS" },
+  { title: "505", artist: "Arctic Monkeys", src: audio505.url },
   { title: "Último baile", artist: "Chachacha", src: audioChachacha.url },
   { title: "My One and Only Love", artist: "Para Key", src: audioLove.url },
 ];

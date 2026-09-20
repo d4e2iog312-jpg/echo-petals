@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
-import alegre from "@/assets/amigo-alegre.png.asset.json";
-import timido from "@/assets/amigo-timido.png.asset.json";
+import alegre from "@/assets/amigo-alegre-limpio.png.asset.json";
+import timido from "@/assets/amigo-timido-limpio.png.asset.json";
 
 type Friend = { id: number; src: string; x: number; y: number; angle: number };
 
@@ -45,7 +45,7 @@ export function ClearFriends() {
           <img
             key={friend.id}
             src={friend.src}
-            alt="Amiguito dibujado para guardar"
+            alt={friend.src === alegre.url ? "Mini dibujo de chico de pelo blanco" : "Mini dibujo de chico de pelo negro"}
             className={`amiguito ${dragging === friend.id ? "arrastrando" : ""}`}
             style={{ left: `${friend.x}%`, top: `${friend.y}%`, rotate: `${friend.angle}deg` }}
             onPointerDown={(event) => {
