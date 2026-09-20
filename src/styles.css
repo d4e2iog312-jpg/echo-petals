@@ -530,7 +530,7 @@ body {
   width: 100%;
   height: 100%;
   overflow: auto;
-  padding: 1rem 1rem 6.5rem;
+  padding: 0 0 5.5rem;
   display: flex;
   justify-content: center;
   overscroll-behavior: contain;
@@ -538,7 +538,8 @@ body {
 
 .illustrated-letter {
   display: block;
-  width: min(calc(100vw - 2rem), 61rem);
+  width: 100vw;
+  max-width: none;
   min-height: 0;
   height: max-content;
   object-fit: contain;
@@ -647,10 +648,17 @@ body {
 @keyframes pulso-borde { 50% { border-color: oklch(0.96 0.16 95 / 0.95); box-shadow: inset 0 0 55px oklch(0.88 0.17 92 / 0.4); } }
 
 /* ---------- carta para rascar ---------- */
-.etapa-rasca { width: min(100%, 48rem); }
-.etapa-rasca h2 { font-size: clamp(2rem, 5vw, 3.6rem); }
+.etapa-rasca { width: 100%; max-width: 60rem; }
+.rasca-area {
+  position: relative;
+  width: min(100%, 56rem);
+  min-height: min(78svh, 48rem);
+  display: grid;
+  place-items: center;
+}
 .rasca-marco {
   position: relative;
+  z-index: 2;
   width: min(76vw, 30rem);
   aspect-ratio: 2 / 3;
   overflow: hidden;
@@ -659,8 +667,20 @@ body {
 .rasca-marco img, .rasca-marco canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
 .rasca-marco img { object-fit: cover; }
 .rasca-marco canvas { touch-action: none; cursor: crosshair; }
-.rasca-progreso { width: min(76vw, 30rem); height: 8px; background: oklch(1 0 0 / 0.24); overflow: hidden; }
-.rasca-progreso span { display: block; height: 100%; background: var(--sol); transition: width 0.2s ease; }
+.rasca-amiguito {
+  position: absolute;
+  z-index: 3;
+  width: clamp(3.3rem, 9vw, 6rem);
+  height: clamp(4.2rem, 12vw, 7.4rem);
+  object-fit: contain;
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 4px 5px oklch(0.1 0 0 / 0.42));
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+.rasca-amiguito:active { cursor: grabbing; }
+.rasca-amiguito ~ .rasca-marco { z-index: 2; }
 
 /* ---------- carta musical ---------- */
 .etapa-musical { width: min(100%, 78rem); padding-bottom: 1rem; }

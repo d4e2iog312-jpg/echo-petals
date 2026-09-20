@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from "react";
 import { FlowerRain, pedirPermisoSacudida } from "@/components/FlowerRain";
 import { LyricsBar } from "@/components/LyricsBar";
 import { Letter } from "@/components/Letter";
-import { ClearFriends } from "@/components/ClearFriends";
 import { ScratchLetter } from "@/components/ScratchLetter";
 import { MusicLetter } from "@/components/MusicLetter";
 import { PersonalMessage } from "@/components/PersonalMessage";
@@ -35,7 +34,7 @@ export const Route = createFileRoute("/")({
   component: Pagina,
 });
 
-const ETAPAS = 7;
+const ETAPAS = 6;
 
 function Pagina() {
   const [etapa, setEtapa] = useState(0);
@@ -121,18 +120,14 @@ function Pagina() {
         )}
 
         {etapa === 3 && (
-          <ClearFriends />
-        )}
-
-        {etapa === 4 && (
           <ScratchLetter onComplete={() => setRascaLista(true)} />
         )}
 
-        {etapa === 5 && (
+        {etapa === 4 && (
           <MusicLetter onPlayback={controlarAudioEspecial} />
         )}
 
-        {etapa === 6 && (
+        {etapa === 5 && (
           <section className="etapa etapa-final">
             <h2>Feliz día, Key</h2>
             <p className="mensaje-final">
@@ -148,7 +143,7 @@ function Pagina() {
           </section>
         )}
 
-        {etapa < ETAPAS - 1 && (etapa !== 2 || cartaCerrada) && (etapa !== 4 || rascaLista) && (
+        {etapa < ETAPAS - 1 && (etapa !== 2 || cartaCerrada) && (etapa !== 3 || rascaLista) && (
           <Button type="button" className="btn-siguiente" onClick={avanzar}>
             siguiente <span className="flecha">--&gt;</span>
           </Button>
