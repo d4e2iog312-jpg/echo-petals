@@ -2,14 +2,15 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { FlowerRain, pedirPermisoSacudida } from "@/components/FlowerRain";
 import { LyricsBar } from "@/components/LyricsBar";
+import { Letter } from "@/components/Letter";
 import { ScratchLetter } from "@/components/ScratchLetter";
 import { MusicLetter } from "@/components/MusicLetter";
-import { PersonalMessage } from "@/components/PersonalMessage";
 import { Button } from "@/components/ui/button";
 import fondo from "@/assets/girasoles.asset.json";
 import cancion from "@/assets/girasol.mp3.asset.json";
 import personaje from "@/assets/personaje-ramo.png";
 import finalYoshiki from "@/assets/final-yoshiki-claro.png.asset.json";
+import { assetUrl } from "@/lib/asset-url";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -38,7 +39,6 @@ const ETAPAS = 5;
 function Pagina() {
   const [etapa, setEtapa] = useState(0);
   const [audioEl, setAudioEl] = useState<HTMLAudioElement | null>(null);
-  const [mensaje, setMensaje] = useState("");
   const [rascaLista, setRascaLista] = useState(false);
   const [fondoSonando, setFondoSonando] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -80,11 +80,11 @@ function Pagina() {
 
   return (
     <div className="escena">
-      <div className="fondo" style={{ backgroundImage: `url(${fondo.url})` }} />
+      <div className="fondo" style={{ backgroundImage: `url(${assetUrl(fondo)})` }} />
       <div className="fondo-velo" />
-      {etapa === 4 && <div className="fondo-final" style={{ backgroundImage: `url(${finalYoshiki.url})` }} />}
+      {etapa === 4 && <div className="fondo-final" style={{ backgroundImage: `url(${assetUrl(finalYoshiki)})` }} />}
 
-      <audio ref={audioRef} src={cancion.url} loop preload="auto" playsInline />
+      <audio ref={audioRef} src={assetUrl(cancion)} loop preload="auto" playsInline />
 
       <FlowerRain active={etapa >= 1} delicate />
 
@@ -105,9 +105,7 @@ function Pagina() {
           </section>
         )}
 
-        {etapa === 1 && (
-          <PersonalMessage value={mensaje} onChange={setMensaje} />
-        )}
+        {etapa === 1 && <Letter onClose={() => undefined} />}
 
         {etapa === 2 && (
           <ScratchLetter onComplete={() => setRascaLista(true)} />
