@@ -97,7 +97,6 @@ export function MusicLetter({ onPlayback }: { onPlayback: (playing: boolean) => 
           }}
         />
         <button type="button" className="spotify-card-overlay" onClick={() => togglePlayback("spotify")} aria-label={playing && currentTrack === "spotify" ? "Pausar 505" : "Reproducir 505"}>
-          <span className="spotify-state-icon" aria-hidden="true">{playing && currentTrack === "spotify" ? "❚❚" : "▶"}</span>
           <span className="sr-only">{playing && currentTrack === "spotify" ? "Pausar 505" : "Reproducir 505"}</span>
           <span className="spotify-progress-live" aria-hidden="true"><span style={{ width: `${progressPercent}%` }} /></span>
           <span className="spotify-time-live" aria-hidden="true">{formatTime(time)} / {formatTime(duration)}</span>

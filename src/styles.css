@@ -709,12 +709,12 @@ body {
 .carta-musical-wrap.audio-activo .control-barra-1::after, .carta-musical-wrap.audio-activo .control-barra-2::after { content: ""; position: absolute; inset: 35% 80% 35% 0; border-radius: 999px; background: var(--sol); opacity: .18; animation: onda-overlay 850ms ease-in-out infinite; }
 @keyframes onda-overlay { 0%, 100% { transform: scaleX(.35); opacity: .08; } 50% { transform: scaleX(1); opacity: .32; } }
 .control-spotify { left: 66%; top: 3%; width: 31%; height: 16%; }
-.spotify-card-overlay { position: absolute; z-index: 50; top: 18%; right: 5%; width: 43%; height: 48%; padding: 0; border: 0; background: transparent; cursor: pointer; pointer-events: auto; touch-action: manipulation; }
+.spotify-card-overlay { position: absolute; z-index: 50; top: 36.5%; right: 6%; width: 27%; height: 26%; padding: 0; border: 0; background: transparent; cursor: pointer; pointer-events: auto; touch-action: manipulation; }
 .spotify-card-overlay:focus-visible, .control-imagen:focus-visible { outline: 2px solid var(--sol); outline-offset: 2px; }
 .spotify-progress-live { position: absolute; left: 9%; right: 9%; top: 19%; height: .18rem; overflow: hidden; border-radius: 999px; background: oklch(.95 .01 85 / .25); pointer-events: none; }
 .spotify-progress-live span { display: block; height: 100%; border-radius: inherit; background: var(--sol); transition: width .2s linear; }
 .spotify-time-live { position: absolute; right: 9%; top: 13%; color: oklch(.96 .01 85 / .7); font: .5rem/1 var(--font-mano); pointer-events: none; }
-.spotify-live-lyrics { position: absolute; inset: 29% 9% 8%; overflow: hidden; opacity: 1; color: oklch(.96 .01 85 / .78); font: clamp(.52rem, 1.2vw, .82rem)/1.2 var(--font-mano); text-align: left; pointer-events: none; }
+.spotify-live-lyrics { position: absolute; inset: 28% 9% 8%; overflow: hidden; opacity: 1; color: oklch(.96 .01 85 / .78); font: clamp(.52rem, 1.2vw, .82rem)/1.2 var(--font-mano); text-align: left; pointer-events: none; }
 .spotify-live-lyrics-track { display: grid; transition: transform .55s cubic-bezier(.22,.61,.36,1); }
 .spotify-live-lyrics-track span { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; opacity: .42; transition: opacity .35s ease, color .35s ease; }
 .spotify-live-lyrics-track .is-current { color: var(--sol); opacity: 1; font-weight: 700; }
