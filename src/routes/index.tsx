@@ -8,7 +8,6 @@ import { ScratchLetter } from "@/components/ScratchLetter";
 import { MusicLetter } from "@/components/MusicLetter";
 import { PersonalMessage } from "@/components/PersonalMessage";
 import { Button } from "@/components/ui/button";
-import { Pause, Play } from "lucide-react";
 import fondo from "@/assets/girasoles.asset.json";
 import cancion from "@/assets/girasol.mp3.asset.json";
 import personaje from "@/assets/personaje-ramo.png";
@@ -81,16 +80,6 @@ function Pagina() {
       background.pause();
       setFondoSonando(false);
     } else background.play().then(() => setFondoSonando(true)).catch(() => {});
-  };
-
-  const alternarFondo = () => {
-    const background = audioRef.current;
-    if (!background) return;
-    if (background.paused) background.play().then(() => setFondoSonando(true)).catch(() => {});
-    else {
-      background.pause();
-      setFondoSonando(false);
-    }
   };
 
   return (
@@ -174,9 +163,6 @@ function Pagina() {
       </main>
 
       <LyricsBar audio={audioEl} />
-      <Button type="button" size="icon" className="control-fondo" onClick={alternarFondo} aria-label={fondoSonando ? "Pausar música de fondo" : "Reproducir música de fondo"}>
-        {fondoSonando ? <Pause /> : <Play />}
-      </Button>
     </div>
   );
 }
