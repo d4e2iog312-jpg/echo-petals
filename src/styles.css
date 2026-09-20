@@ -716,10 +716,8 @@ body {
 .control-imagen.is-playing .wave-state { color: var(--sol); animation: estado-pulso .9s ease-in-out infinite; }
 @keyframes estado-pulso { 0%, 100% { opacity: .55; transform: translate(-50%, -50%) scale(.92); } 50% { opacity: 1; transform: translate(-50%, -50%) scale(1.08); } }
 .spotify-card-overlay:focus-visible, .control-imagen:focus-visible { outline: 2px solid var(--sol); outline-offset: 2px; }
-.spotify-progress-live { position: absolute; left: 9%; right: 9%; top: 19%; height: .18rem; overflow: hidden; border-radius: 999px; background: oklch(.95 .01 85 / .25); pointer-events: none; }
-.spotify-progress-live span { display: block; height: 100%; border-radius: inherit; background: var(--sol); transition: width .2s linear; }
-.spotify-time-live { position: absolute; right: 9%; top: 13%; color: oklch(.96 .01 85 / .7); font: .5rem/1 var(--font-mano); pointer-events: none; }
-.spotify-live-lyrics { position: absolute; inset: 28% 9% 8%; overflow: hidden; opacity: 1; color: oklch(.96 .01 85 / .78); font: clamp(.52rem, 1.2vw, .82rem)/1.2 var(--font-mano); text-align: left; pointer-events: none; }
+.spotify-progress-live, .spotify-time-live, .spotify-live-lyrics { opacity: 0; pointer-events: none; }
+.spotify-live-lyrics { position: absolute; inset: 28% 9% 8%; overflow: hidden; font: clamp(.52rem, 1.2vw, .82rem)/1.2 var(--font-mano); text-align: left; }
 .spotify-live-lyrics-track { display: grid; transition: transform .55s cubic-bezier(.22,.61,.36,1); }
 .spotify-live-lyrics-track span { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; opacity: .42; transition: opacity .35s ease, color .35s ease; }
 .spotify-live-lyrics-track .is-current { color: var(--sol); opacity: 1; font-weight: 700; }
