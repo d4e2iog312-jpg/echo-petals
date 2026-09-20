@@ -676,8 +676,8 @@ body {
   pointer-events: auto;
 }
 .audio-pos-1 { left: 67%; top: 4.3%; }
-.audio-pos-2 { left: 14%; top: 45.1%; }
-.audio-pos-3 { left: 18%; top: 54.7%; }
+.audio-pos-2 { left: 14%; top: 59.8%; }
+.audio-pos-3 { left: 18%; top: 72.8%; }
 .audio-play { flex: 0 0 auto; width: 1.65rem; height: 1.65rem; min-width: 1.65rem; border-radius: 50%; color: var(--tinta); background: var(--sol); }
 .audio-play svg { width: 0.85rem; height: 0.85rem; }
 .audio-info { min-width: 0; flex: 1; display: grid; text-align: left; }
@@ -803,8 +803,8 @@ body {
   .letter-scroll { padding: 0.35rem 0.35rem 6rem; }
   .illustrated-letter { width: 100%; }
   .etapa-limpieza { height: 68svh; }
-  .amigos-area { inset: 0.3rem; }
-  .amiguito { width: clamp(4.8rem, 24vw, 6.5rem); }
+  .amigos-area { inset: 1rem 0.5rem 7rem; }
+  .amiguito { width: clamp(2.15rem, 12vw, 3.1rem); height: clamp(2.85rem, 16vw, 4.1rem); }
   .rasca-marco { width: min(88vw, 27rem); }
   .rasca-progreso { width: min(88vw, 27rem); }
   .carta-musical-wrap { width: min(92vw, 34rem); }
