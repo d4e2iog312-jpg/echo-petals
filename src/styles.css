@@ -700,7 +700,8 @@ body {
 .controles-integrados { position: absolute; inset: 0; pointer-events: none; }
 .control-imagen { position: absolute; display: block; border: 0; padding: 0; background: transparent; cursor: pointer; pointer-events: auto; }
 .control-imagen:focus-visible { outline: 2px solid var(--sol); outline-offset: 2px; }
-.control-barra { left: 2%; top: 58%; width: 45%; height: 8%; }
+.control-barra-1 { left: 2%; top: 58%; width: 45%; height: 8%; }
+.control-barra-2 { left: 2%; top: 78%; width: 45%; height: 8%; }
 .control-spotify { left: 66%; top: 3%; width: 31%; height: 16%; }
 .control-letra { left: 66%; top: 48%; width: 30%; height: 24%; }
 .audio-mensaje {

@@ -1,6 +1,4 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Pause, Play } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 const TRACK = {
   title: "505",
@@ -59,39 +57,25 @@ export function MusicLetter({ onPlayback }: { onPlayback: (playing: boolean) => 
     <section className="etapa etapa-musical">
       <div className="carta-musical-wrap">
         <img src="/assets/carta-ilustrada-key.jpeg" alt="Carta ilustrada My Last Love para Key" />
+        <audio
+          ref={audioRef}
+          src={TRACK.src}
+          preload="metadata"
+          onLoadedMetadata={(event) => setDuration(event.currentTarget.duration)}
+          onTimeUpdate={(event) => setTime(event.currentTarget.currentTime)}
+          onPlay={() => setPlayingState(true)}
+          onPause={() => setPlayingState(false)}
+          onEnded={() => {
+            setPlayingState(false);
+            setTime(0);
+          }}
+        />
         <div className="audios-flotantes">
           <div className="controles-integrados" aria-label="Controles integrados de 505">
-            <button type="button" className="control-imagen control-barra" onClick={togglePlayback} aria-label={playing ? "Pausar 505" : "Reproducir 505"} />
+            <button type="button" className="control-imagen control-barra-1" onClick={togglePlayback} aria-label={playing ? "Pausar 505 desde la primera barra" : "Reproducir 505 desde la primera barra"} />
+            <button type="button" className="control-imagen control-barra-2" onClick={togglePlayback} aria-label={playing ? "Pausar 505 desde la segunda barra" : "Reproducir 505 desde la segunda barra"} />
             <button type="button" className="control-imagen control-spotify" onClick={togglePlayback} aria-label={playing ? "Pausar 505 desde Spotify" : "Reproducir 505 desde Spotify"} />
             <button type="button" className="control-imagen control-letra" onClick={togglePlayback} aria-label={playing ? "Pausar 505 desde la tarjeta de letra" : "Reproducir 505 desde la tarjeta de letra"} />
-          </div>
-          <div className="audio-mensaje audio-pos-1">
-            <audio
-              ref={audioRef}
-              src={TRACK.src}
-              preload="metadata"
-              onLoadedMetadata={(event) => setDuration(event.currentTarget.duration)}
-              onTimeUpdate={(event) => setTime(event.currentTarget.currentTime)}
-              onPlay={() => setPlayingState(true)}
-              onPause={() => setPlayingState(false)}
-              onEnded={() => {
-                setPlayingState(false);
-                setTime(0);
-              }}
-            />
-            <Button type="button" size="icon" className="audio-play" onClick={togglePlayback} aria-label={playing ? "Pausar 505" : "Reproducir 505"}>
-              {playing ? <Pause /> : <Play />}
-            </Button>
-            <div className="audio-info">
-              <div className={`frecuencias ${playing ? "onda-activa" : ""}`} aria-hidden>
-                {Array.from({ length: 20 }).map((_, index) => <span key={index} style={{ ["--bar-delay" as string]: `${index * 35}ms` }} />)}
-              </div>
-              <input aria-label="Progreso de 505" type="range" min="0" max={duration || 1} value={Math.min(time, duration || 1)} onChange={(event) => { if (audioRef.current) { audioRef.current.currentTime = Number(event.target.value); setTime(Number(event.target.value)); } }} />
-              <div className="audio-meta"><span>{TRACK.title} · {TRACK.artist}</span><span>{formatTime(time)} / {formatTime(duration)}</span></div>
-              <div className="audio-lyrics" aria-live="polite">
-                {LYRICS.slice(Math.max(0, lyricIndex - 1), lyricIndex + 2).map((line, index) => <span key={line.at} className={index === Math.min(1, lyricIndex) ? "lyric-active" : ""}>{line.text}</span>)}
-              </div>
-            </div>
           </div>
         </div>
       </div>
