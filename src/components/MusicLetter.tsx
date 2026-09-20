@@ -60,6 +60,11 @@ export function MusicLetter({ onPlayback }: { onPlayback: (playing: boolean) => 
       <div className="carta-musical-wrap">
         <img src="/assets/carta-ilustrada-key.jpeg" alt="Carta ilustrada My Last Love para Key" />
         <div className="audios-flotantes">
+          <div className="controles-integrados" aria-label="Controles integrados de 505">
+            <button type="button" className="control-imagen control-barra" onClick={togglePlayback} aria-label={playing ? "Pausar 505" : "Reproducir 505"} />
+            <button type="button" className="control-imagen control-spotify" onClick={togglePlayback} aria-label={playing ? "Pausar 505 desde Spotify" : "Reproducir 505 desde Spotify"} />
+            <a className="control-imagen control-letra" href="https://open.spotify.com/intl-es/track/58ge6dfP91o9oXMzq3XkIS" target="_blank" rel="noreferrer" aria-label="Abrir 505 en Spotify" />
+          </div>
           <div className="audio-mensaje audio-pos-1">
             <audio
               ref={audioRef}
