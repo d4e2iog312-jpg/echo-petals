@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import cartaRasca from "@/assets/carta-rasca.png.asset.json";
+import { assetUrl } from "@/lib/asset-url";
 const muñecosKey = "/assets/muñecos-key.jpeg";
 
 type Friend = { id: number; side: "izquierdo" | "derecho"; x: number; y: number; angle: number };
@@ -69,7 +70,7 @@ export function ScratchLetter({ onComplete }: { onComplete: () => void }) {
           />
         ))}
         <div className="rasca-marco">
-          <img src={cartaRasca.url} alt="Carta ilustrada para Key" />
+          <img src={assetUrl(cartaRasca)} alt="Carta ilustrada para Key" />
           <canvas ref={canvasRef} width={1024} height={1536} aria-label="Superficie para rascar y descubrir la carta" onPointerDown={(event) => { event.currentTarget.setPointerCapture(event.pointerId); scratch(event); }} onPointerMove={scratch} />
         </div>
       </div>

@@ -3,6 +3,7 @@ import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import sobreAsset from "@/assets/sobre.png.asset.json";
 import cartaIlustrada from "@/assets/carta-ilustrada-final.png.asset.json";
+import { assetUrl } from "@/lib/asset-url";
 
 export function Letter({ onClose }: { onClose: () => void }) {
   const [open, setOpen] = useState(false);
@@ -59,7 +60,7 @@ export function Letter({ onClose }: { onClose: () => void }) {
             });
           }}
         >
-          <img src={sobreAsset.url} alt="Una carta cerrada con un sello" />
+          <img src={assetUrl(sobreAsset)} alt="Una carta cerrada con un sello" />
           <span className="envelope-hint">toca para abrir</span>
         </button>
       )}
@@ -69,7 +70,7 @@ export function Letter({ onClose }: { onClose: () => void }) {
           <div className="letter-scroll">
             <img
               className="illustrated-letter"
-              src={cartaIlustrada.url}
+              src={assetUrl(cartaIlustrada)}
               alt="Carta ilustrada del Día de las Flores Amarillas"
             />
           </div>

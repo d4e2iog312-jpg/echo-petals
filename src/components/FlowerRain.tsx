@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import florAsset from "@/assets/flor.png.asset.json";
+import { assetUrl } from "@/lib/asset-url";
 
 const FRASES = [
   "feliz día :3",
@@ -193,7 +194,7 @@ export function FlowerRain({ active = true, delicate = false }: { active?: boole
             }}
           >
             <img
-              src={florAsset.url}
+              src={assetUrl(florAsset)}
               alt=""
               draggable={false}
               style={{ transform: p.flip ? "scaleX(-1)" : undefined }}
@@ -212,10 +213,10 @@ export function FlowerRain({ active = true, delicate = false }: { active?: boole
             style={{ left: b.x, top: b.y, width: b.size, height: b.size }}
           >
             <div className="half half-l" style={{ filter: p.filter }}>
-              <img src={florAsset.url} alt="" />
+              <img src={assetUrl(florAsset)} alt="" />
             </div>
             <div className="half half-r" style={{ filter: p.filter }}>
-              <img src={florAsset.url} alt="" />
+              <img src={assetUrl(florAsset)} alt="" />
             </div>
             <span className="frase">{b.frase}</span>
           </div>

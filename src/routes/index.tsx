@@ -10,6 +10,7 @@ import fondo from "@/assets/girasoles.asset.json";
 import cancion from "@/assets/girasol.mp3.asset.json";
 import personaje from "@/assets/personaje-ramo.png";
 import finalYoshiki from "@/assets/final-yoshiki-claro.png.asset.json";
+import { assetUrl } from "@/lib/asset-url";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -79,11 +80,11 @@ function Pagina() {
 
   return (
     <div className="escena">
-      <div className="fondo" style={{ backgroundImage: `url(${fondo.url})` }} />
+      <div className="fondo" style={{ backgroundImage: `url(${assetUrl(fondo)})` }} />
       <div className="fondo-velo" />
-      {etapa === 4 && <div className="fondo-final" style={{ backgroundImage: `url(${finalYoshiki.url})` }} />}
+      {etapa === 4 && <div className="fondo-final" style={{ backgroundImage: `url(${assetUrl(finalYoshiki)})` }} />}
 
-      <audio ref={audioRef} src={cancion.url} loop preload="auto" playsInline />
+      <audio ref={audioRef} src={assetUrl(cancion)} loop preload="auto" playsInline />
 
       <FlowerRain active={etapa >= 1} delicate />
 

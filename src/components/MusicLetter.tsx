@@ -5,11 +5,12 @@ import cartaMusical from "@/assets/carta-musical.png.asset.json";
 import audio505 from "@/assets/505-arctic-monkeys.mp3.asset.json";
 import audioChachacha from "@/assets/chachacha.mp3.asset.json";
 import audioLove from "@/assets/my-one-and-only-love.mp3.asset.json";
+import { assetUrl } from "@/lib/asset-url";
 
 const TRACKS = [
-  { title: "505", artist: "Arctic Monkeys", src: audio505.url },
-  { title: "Último baile", artist: "Chachacha", src: audioChachacha.url },
-  { title: "My One and Only Love", artist: "Para Key", src: audioLove.url },
+  { title: "505", artist: "Arctic Monkeys", src: assetUrl(audio505) },
+  { title: "Último baile", artist: "Chachacha", src: assetUrl(audioChachacha) },
+  { title: "My One and Only Love", artist: "Para Key", src: assetUrl(audioLove) },
 ];
 
 function AudioMessage({ track, index, active, onActivate, onState }: { track: (typeof TRACKS)[number]; index: number; active: boolean; onActivate: (index: number) => void; onState: (playing: boolean) => void }) {
