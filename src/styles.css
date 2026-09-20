@@ -697,8 +697,9 @@ body {
 .carta-musical-wrap { position: relative; width: min(96vw, 64rem); margin: 0 auto; }
 .carta-musical-wrap > img { display: block; width: 100%; height: auto; max-height: 88svh; object-fit: contain; box-shadow: 0 20px 50px oklch(0.05 0 0 / 0.72); transition: transform .45s ease, filter .45s ease; }
 .spotify-reference-player, .spotify-reference-lyrics { position: absolute; z-index: 18; display: block; pointer-events: none; opacity: 1; object-fit: fill; }
-.spotify-reference-player { top: 7%; right: 5%; width: 28%; height: 17%; }
-.spotify-reference-lyrics { top: 36.5%; right: 6%; width: 27%; height: 26%; }
+.spotify-reference-player { top: 3%; right: 6%; width: 24%; height: 14%; object-fit: contain; }
+.spotify-reference-lyrics { top: 36.5%; right: 6%; width: 21%; height: 26%; object-fit: contain; }
+.spotify-card-overlay { top: 36.5%; right: 6%; width: 21%; height: 26%; }
 .carta-musical-wrap.audio-activo > img { animation: carta-respira 1.8s ease-in-out infinite; filter: brightness(1.02) contrast(1.02); }
 .carta-musical-wrap.audio-activo::after { content: ""; position: absolute; inset: .4%; pointer-events: none; border: 1px solid oklch(.95 .08 85 / .28); box-shadow: 0 0 24px oklch(.8 .12 75 / .18); animation: borde-musical 1.8s ease-in-out infinite; }
 @keyframes carta-respira { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-1px) scale(1.002); } }
@@ -712,7 +713,7 @@ body {
 .carta-musical-wrap.audio-activo .control-barra-1::after, .carta-musical-wrap.audio-activo .control-barra-2::after { content: ""; position: absolute; inset: 35% 80% 35% 0; border-radius: 999px; background: var(--sol); opacity: .18; animation: onda-overlay 850ms ease-in-out infinite; }
 @keyframes onda-overlay { 0%, 100% { transform: scaleX(.35); opacity: .08; } 50% { transform: scaleX(1); opacity: .32; } }
 .control-spotify { left: 66%; top: 3%; width: 31%; height: 16%; }
-.spotify-card-overlay { position: absolute; z-index: 50; top: 36.5%; right: 6%; width: 27%; height: 26%; padding: 0; border: 0; background: transparent; cursor: pointer; pointer-events: auto; touch-action: manipulation; }
+.spotify-card-overlay { position: absolute; z-index: 50; top: 36.5%; right: 6%; width: 21%; height: 26%; padding: 0; border: 0; background: transparent; cursor: pointer; pointer-events: auto; touch-action: manipulation; }
 .spotify-play-state { position: absolute; left: 50%; top: 38%; transform: translate(-50%, -50%); color: oklch(.98 .01 85 / .78); font: 700 clamp(.8rem, 2vw, 1.35rem)/1 system-ui, sans-serif; opacity: .7; text-shadow: 0 1px 4px #000; pointer-events: none; }
 .spotify-card-overlay.is-playing .spotify-play-state { color: var(--sol); animation: estado-pulso .9s ease-in-out infinite; }
 .wave-state { position: absolute; left: 8%; top: 50%; transform: translateY(-50%); color: oklch(.98 .01 85 / .8); font: 700 .7rem/1 system-ui, sans-serif; text-shadow: 0 1px 3px #000; pointer-events: none; }
