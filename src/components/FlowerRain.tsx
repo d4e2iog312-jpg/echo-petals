@@ -52,7 +52,7 @@ type Broken = {
 
 let uid = 1;
 
-export function FlowerRain({ active = true }: { active?: boolean }) {
+export function FlowerRain({ active = true, delicate = false }: { active?: boolean; delicate?: boolean }) {
   const [falling, setFalling] = useState<Falling[]>([]);
   const [broken, setBroken] = useState<Broken[]>([]);
   const fallingRef = useRef<Falling[]>([]);
@@ -64,7 +64,7 @@ export function FlowerRain({ active = true }: { active?: boolean }) {
     const w = window.innerWidth;
     const add: Falling[] = [];
     for (let i = 0; i < count; i++) {
-      const size = 42 + Math.random() * 46;
+      const size = delicate ? 20 + Math.random() * 14 : 42 + Math.random() * 46;
       add.push({
         id: uid++,
         x: Math.random() * (w - size),
@@ -85,10 +85,10 @@ export function FlowerRain({ active = true }: { active?: boolean }) {
   // Caen ~3 flores cada 3 segundos
   useEffect(() => {
     if (!active) return;
-    spawn(3);
-    const id = window.setInterval(() => spawn(3), 3000);
+    spawn(delicate ? 2 : 3);
+    const id = window.setInterval(() => spawn(delicate ? 1 : 3), delicate ? 4500 : 3000);
     return () => window.clearInterval(id);
-  }, [active, spawn]);
+  }, [active, delicate, spawn]);
 
   // Sacudir el teléfono => lluvia de flores
   useEffect(() => {

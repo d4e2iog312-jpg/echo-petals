@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { ExternalLink, Pause, Play } from "lucide-react";
+import { Pause, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import cartaMusical from "@/assets/carta-musical.png.asset.json";
 import audio505 from "@/assets/505-arctic-monkeys.mp3.asset.json";
@@ -12,7 +12,7 @@ const TRACKS = [
   { title: "My One and Only Love", artist: "Para Key", src: audioLove.url },
 ];
 
-function AudioMessage({ track, onState }: { track: (typeof TRACKS)[number]; onState: (playing: boolean) => void }) {
+function AudioMessage({ track, index, active, onActivate, onState }: { track: (typeof TRACKS)[number]; index: number; active: boolean; onActivate: (index: number) => void; onState: (playing: boolean) => void }) {
   const audioRef = useRef<HTMLAudioElement>(null);
   const barsRef = useRef<Array<HTMLSpanElement | null>>([]);
   const analyserRef = useRef<AnalyserNode | null>(null);
@@ -26,6 +26,10 @@ function AudioMessage({ track, onState }: { track: (typeof TRACKS)[number]; onSt
     cancelAnimationFrame(frameRef.current);
     contextRef.current?.close().catch(() => {});
   }, []);
+
+  useEffect(() => {
+    if (!active && audioRef.current && !audioRef.current.paused) audioRef.current.pause();
+  }, [active]);
 
   const animate = () => {
     const analyser = analyserRef.current;
@@ -55,6 +59,7 @@ function AudioMessage({ track, onState }: { track: (typeof TRACKS)[number]; onSt
         analyserRef.current = analyser;
       }
       await contextRef.current?.resume();
+      onActivate(index);
       await audio.play();
       setPlaying(true);
       onState(true);
@@ -71,30 +76,27 @@ function AudioMessage({ track, onState }: { track: (typeof TRACKS)[number]; onSt
   };
 
   return (
-    <div className="audio-mensaje">
+    <div className={`audio-mensaje audio-pos-${index + 1}`}>
       <audio ref={audioRef} src={track.src} preload="metadata" onPause={stopped} onEnded={stopped} onTimeUpdate={(e) => setTime(e.currentTarget.currentTime)} onLoadedMetadata={(e) => setDuration(e.currentTarget.duration)} />
       <Button type="button" size="icon" className="audio-play" onClick={toggle} aria-label={playing ? `Pausar ${track.title}` : `Reproducir ${track.title}`}>
         {playing ? <Pause /> : <Play />}
       </Button>
       <div className="audio-info">
-        <strong>{track.title}</strong><span>{track.artist}</span>
         <div className="frecuencias" aria-hidden>{Array.from({ length: 28 }).map((_, i) => <span key={i} ref={(node) => { barsRef.current[i] = node; }} />)}</div>
         <input aria-label={`Progreso de ${track.title}`} type="range" min="0" max={duration || 1} value={time} onChange={(e) => { if (audioRef.current) audioRef.current.currentTime = Number(e.target.value); }} />
       </div>
-      {track.spotify && <Button asChild variant="ghost" size="icon"><a href={track.spotify} target="_blank" rel="noreferrer" aria-label="Abrir 505 en Spotify"><ExternalLink /></a></Button>}
     </div>
   );
 }
 
 export function MusicLetter({ onPlayback }: { onPlayback: (playing: boolean) => void }) {
+  const [active, setActive] = useState<number | null>(null);
   return (
     <section className="etapa etapa-musical">
-      <p className="kicker">escucha mientras lees</p>
-      <h2>My Last Love</h2>
       <div className="carta-musical-wrap">
         <img src={cartaMusical.url} alt="Carta My Last Love para Key" />
         <div className="audios-flotantes">
-          {TRACKS.map((track) => <AudioMessage key={track.title} track={track} onState={onPlayback} />)}
+          {TRACKS.map((track, index) => <AudioMessage key={track.title} track={track} index={index} active={active === index} onActivate={setActive} onState={onPlayback} />)}
         </div>
       </div>
     </section>
