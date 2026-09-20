@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-const cartaRascaKey = "/assets/carta-rasca-key.png";
+import cartaRasca from "@/assets/carta-rasca.png.asset.json";
+import { assetUrl } from "@/lib/asset-url";
 const muñecosKey = "/assets/muñecos-recorte.jpeg";
 
 type Friend = { id: number; side: "izquierdo" | "derecho"; x: number; y: number; angle: number };
@@ -16,7 +17,6 @@ export function ScratchLetter({ onComplete }: { onComplete: () => void }) {
   const areaRef = useRef<HTMLDivElement>(null);
   const strokes = useRef(0);
   const [friends, setFriends] = useState<Friend[]>(STARTS);
-  const [breaking, setBreaking] = useState<number | null>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -32,11 +32,7 @@ export function ScratchLetter({ onComplete }: { onComplete: () => void }) {
   }, []);
 
   const removeFriend = (id: number) => {
-    setBreaking(id);
-    window.setTimeout(() => {
-      setFriends((items) => items.filter((item) => item.id !== id));
-      setBreaking((current) => (current === id ? null : current));
-    }, 650);
+    setFriends((items) => items.filter((item) => item.id !== id));
   };
 
   const scratch = (event: React.PointerEvent<HTMLCanvasElement>) => {
@@ -63,7 +59,7 @@ export function ScratchLetter({ onComplete }: { onComplete: () => void }) {
             key={friend.id}
             type="button"
             aria-label="Quitar personaje"
-            className={`rasca-amiguito ${friend.side} ${breaking === friend.id ? "rompiendo" : ""}`}
+            className={`rasca-amiguito ${friend.side}`}
             style={{
               left: `${friend.x}%`,
               top: `${friend.y}%`,
@@ -74,7 +70,7 @@ export function ScratchLetter({ onComplete }: { onComplete: () => void }) {
           />
         ))}
         <div className="rasca-marco">
-          <img src={cartaRascaKey} alt="Carta de buenos días para Key" />
+          <img src="/assets/carta-ilustrada-key.jpeg" alt="Carta ilustrada para Key" />
           <canvas ref={canvasRef} width={1024} height={1536} aria-label="Superficie para rascar y descubrir la carta" onPointerDown={(event) => { event.currentTarget.setPointerCapture(event.pointerId); scratch(event); }} onPointerMove={scratch} />
         </div>
       </div>
