@@ -2,7 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { FlowerRain, pedirPermisoSacudida } from "@/components/FlowerRain";
 import { LyricsBar } from "@/components/LyricsBar";
-import { Letter } from "@/components/Letter";
 import { ScratchLetter } from "@/components/ScratchLetter";
 import { MusicLetter } from "@/components/MusicLetter";
 import { PersonalMessage } from "@/components/PersonalMessage";
@@ -34,12 +33,11 @@ export const Route = createFileRoute("/")({
   component: Pagina,
 });
 
-const ETAPAS = 6;
+const ETAPAS = 5;
 
 function Pagina() {
   const [etapa, setEtapa] = useState(0);
   const [audioEl, setAudioEl] = useState<HTMLAudioElement | null>(null);
-  const [cartaCerrada, setCartaCerrada] = useState(false);
   const [mensaje, setMensaje] = useState("");
   const [rascaLista, setRascaLista] = useState(false);
   const [fondoSonando, setFondoSonando] = useState(false);
@@ -67,7 +65,6 @@ function Pagina() {
 
   const repetir = () => {
     if (audioRef.current) audioRef.current.currentTime = 0;
-    setCartaCerrada(false);
     setRascaLista(false);
     setEtapa(0);
   };
@@ -85,7 +82,7 @@ function Pagina() {
     <div className="escena">
       <div className="fondo" style={{ backgroundImage: `url(${fondo.url})` }} />
       <div className="fondo-velo" />
-      {etapa === 6 && <div className="fondo-final" style={{ backgroundImage: `url(${finalYoshiki.url})` }} />}
+      {etapa === 4 && <div className="fondo-final" style={{ backgroundImage: `url(${finalYoshiki.url})` }} />}
 
       <audio ref={audioRef} src={cancion.url} loop preload="auto" playsInline />
 
@@ -113,21 +110,14 @@ function Pagina() {
         )}
 
         {etapa === 2 && (
-          <section className="etapa">
-            <h2>Te escribí algo</h2>
-            <Letter onClose={() => setCartaCerrada(true)} />
-          </section>
-        )}
-
-        {etapa === 3 && (
           <ScratchLetter onComplete={() => setRascaLista(true)} />
         )}
 
-        {etapa === 4 && (
+        {etapa === 3 && (
           <MusicLetter onPlayback={controlarAudioEspecial} />
         )}
 
-        {etapa === 5 && (
+        {etapa === 4 && (
           <section className="etapa etapa-final">
             <h2>Feliz día, Key</h2>
             <p className="mensaje-final">
@@ -143,7 +133,7 @@ function Pagina() {
           </section>
         )}
 
-        {etapa < ETAPAS - 1 && (etapa !== 2 || cartaCerrada) && (etapa !== 3 || rascaLista) && (
+        {etapa < ETAPAS - 1 && (etapa !== 2 || rascaLista) && (
           <Button type="button" className="btn-siguiente" onClick={avanzar}>
             siguiente <span className="flecha">--&gt;</span>
           </Button>

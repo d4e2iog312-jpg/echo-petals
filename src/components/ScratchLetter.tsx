@@ -9,7 +9,6 @@ const STARTS = [[32, 28], [68, 28]];
 export function ScratchLetter({ onComplete }: { onComplete: () => void }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const areaRef = useRef<HTMLDivElement>(null);
-  const draggingRef = useRef<number | null>(null);
   const strokes = useRef(0);
   const [friends, setFriends] = useState<Friend[]>(() => STARTS.map(([x, y], id) => ({
     id,
@@ -32,22 +31,8 @@ export function ScratchLetter({ onComplete }: { onComplete: () => void }) {
     }
   }, []);
 
-  const moveFriend = (event: React.PointerEvent<HTMLImageElement>, id: number) => {
-    if (draggingRef.current !== id || !areaRef.current) return;
-    const rect = areaRef.current.getBoundingClientRect();
-    const x = ((event.clientX - rect.left) / rect.width) * 100;
-    const y = ((event.clientY - rect.top) / rect.height) * 100;
-    setFriends((items) => items.map((item) => item.id === id ? { ...item, x, y } : item));
-  };
-
-  const releaseFriend = (event: React.PointerEvent<HTMLImageElement>, id: number) => {
-    const rect = areaRef.current?.getBoundingClientRect();
-    const outside = rect && (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom);
-    event.currentTarget.releasePointerCapture(event.pointerId);
-    draggingRef.current = null;
-    if (outside) {
-      setFriends((items) => items.filter((item) => item.id !== id));
-    }
+  const removeFriend = (id: number) => {
+    setFriends((items) => items.filter((item) => item.id !== id));
   };
 
   const scratch = (event: React.PointerEvent<HTMLCanvasElement>) => {
@@ -70,7 +55,7 @@ export function ScratchLetter({ onComplete }: { onComplete: () => void }) {
     <section className="etapa etapa-rasca">
       <div ref={areaRef} className="rasca-area">
         {friends.map((friend) => (
-          <img key={friend.id} src={friend.src} alt="Personaje dibujado" className="rasca-amiguito" style={{ left: `${friend.x}%`, top: `${friend.y}%`, rotate: `${friend.angle}deg` }} onPointerDown={(event) => { event.currentTarget.setPointerCapture(event.pointerId); draggingRef.current = friend.id; }} onPointerMove={(event) => moveFriend(event, friend.id)} onPointerUp={(event) => releaseFriend(event, friend.id)} draggable={false} />
+          <img key={friend.id} src={friend.src} alt="Personaje dibujado" className="rasca-amiguito" style={{ left: `${friend.x}%`, top: `${friend.y}%`, rotate: `${friend.angle}deg` }} onPointerDown={() => removeFriend(friend.id)} draggable={false} />
         ))}
         <div className="rasca-marco">
           <img src={cartaRasca.url} alt="Carta ilustrada para Key" />
