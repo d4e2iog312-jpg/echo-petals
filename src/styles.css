@@ -574,8 +574,8 @@ body {
 .carta-ceniza .salir-carta { opacity: 0; }
 
 @keyframes abrir-pantalla {
-  from { opacity: 0; transform: translateX(-50%) scale(0.55) translateY(20vh); }
-  to { opacity: 1; transform: translateX(-50%) scale(1); }
+  from { opacity: 0; transform: scale(0.55) translateY(20vh); }
+  to { opacity: 1; transform: none; }
 }
 
 @keyframes carta-a-ceniza {
@@ -687,17 +687,17 @@ body {
 
 /* ---------- carta musical ---------- */
 .etapa-musical { width: min(100%, 78rem); padding-bottom: 1rem; }
-.carta-musical-wrap { position: relative; width: min(88vw, 42rem); }
-.carta-musical-wrap > img { display: block; width: 100%; box-shadow: 0 20px 50px oklch(0.05 0 0 / 0.72); }
+.carta-musical-wrap { position: relative; width: min(96vw, 64rem); margin: 0 auto; }
+.carta-musical-wrap > img { display: block; width: 100%; height: auto; max-height: 88svh; object-fit: contain; box-shadow: 0 20px 50px oklch(0.05 0 0 / 0.72); }
 .audios-flotantes { position: absolute; inset: 0; pointer-events: none; }
 .audio-mensaje {
   position: absolute;
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  width: 29%;
-  min-height: 2rem;
-  padding: 0.2rem;
+  width: clamp(8rem, 31%, 18rem);
+  min-height: clamp(2.5rem, 6vw, 3.5rem);
+  padding: 0.3rem;
   color: oklch(0.96 0.01 85);
   background: oklch(0.08 0 0 / 0.88);
   border: 1px solid oklch(1 0 0 / 0.35);
@@ -707,7 +707,7 @@ body {
 .audio-pos-1 { left: 67%; top: 4.3%; }
 .audio-pos-2 { left: 14%; top: 59.8%; }
 .audio-pos-3 { left: 18%; top: 72.8%; }
-.audio-play { flex: 0 0 auto; width: 1.65rem; height: 1.65rem; min-width: 1.65rem; border-radius: 50%; color: var(--tinta); background: var(--sol); }
+.audio-play { flex: 0 0 auto; width: clamp(2rem, 5vw, 3rem); height: clamp(2rem, 5vw, 3rem); min-width: clamp(2rem, 5vw, 3rem); border-radius: 50%; color: var(--tinta); background: var(--sol); border: 2px solid var(--miel); }
 .audio-play svg { width: 0.85rem; height: 0.85rem; }
 .audio-info { min-width: 0; flex: 1; display: grid; text-align: left; }
 .audio-info input { width: 100%; height: 0.5rem; accent-color: var(--sol); }

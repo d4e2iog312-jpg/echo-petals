@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Pause, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import cartaMusical from "@/assets/carta-musical.png.asset.json";
 import audio505 from "@/assets/505-arctic-monkeys.mp3.asset.json";
 import audioChachacha from "@/assets/chachacha.mp3.asset.json";
 import audioLove from "@/assets/my-one-and-only-love.mp3.asset.json";
@@ -95,7 +94,7 @@ export function MusicLetter({ onPlayback }: { onPlayback: (playing: boolean) => 
   return (
     <section className="etapa etapa-musical">
       <div className="carta-musical-wrap">
-        <img src={cartaMusical.url} alt="Carta My Last Love para Key" />
+        <img src="/assets/carta-ilustrada-key.jpeg" alt="Carta ilustrada My Last Love para Key" />
         <div className="audios-flotantes">
           {TRACKS.map((track, index) => <AudioMessage key={track.title} track={track} index={index} active={active === index} onActivate={setActive} onState={onPlayback} />)}
         </div>
