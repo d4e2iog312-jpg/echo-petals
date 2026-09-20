@@ -60,6 +60,11 @@ export function FlowerRain({ active = true, delicate = false }: { active?: boole
 
   fallingRef.current = falling;
 
+  useEffect(() => {
+    setFalling([]);
+    setBroken([]);
+  }, [delicate]);
+
   const spawn = useCallback((count: number, fromTop = true) => {
     const w = window.innerWidth;
     const add: Falling[] = [];

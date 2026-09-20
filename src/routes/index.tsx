@@ -101,7 +101,7 @@ function Pagina() {
 
       <audio ref={audioRef} src={cancion.url} loop preload="auto" playsInline />
 
-      <FlowerRain active={etapa >= 1} delicate={etapa === 3} />
+      <FlowerRain active={etapa >= 1} delicate />
 
       <main className="lienzo">
         {etapa === 0 && (

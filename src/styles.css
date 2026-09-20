@@ -539,6 +539,7 @@ body {
 .illustrated-letter {
   display: block;
   width: min(100%, 61rem);
+  min-height: calc(100svh - 6.85rem);
   height: max-content;
   object-fit: contain;
   align-self: flex-start;
@@ -801,7 +802,7 @@ body {
   .creditos { bottom: 5.4rem; }
 
   .letter-scroll { padding: 0.35rem 0.35rem 6rem; }
-  .illustrated-letter { width: 100%; }
+  .illustrated-letter { width: 100%; min-height: calc(100svh - 6.35rem); object-fit: cover; object-position: top center; }
   .etapa-limpieza { height: 68svh; }
   .amigos-area { inset: 1rem 0.5rem 7rem; }
   .amiguito { width: clamp(2.15rem, 12vw, 3.1rem); height: clamp(2.85rem, 16vw, 4.1rem); }
