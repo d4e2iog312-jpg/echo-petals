@@ -538,8 +538,8 @@ body {
 
 .illustrated-letter {
   display: block;
-  width: min(100%, 61rem);
-  min-height: calc(100svh - 6.85rem);
+  width: min(calc(100vw - 2rem), 61rem);
+  min-height: 0;
   height: max-content;
   object-fit: contain;
   align-self: flex-start;
@@ -548,7 +548,7 @@ body {
 }
 
 .salir-carta {
-  position: fixed;
+  position: absolute;
   left: 50%;
   bottom: max(1.25rem, env(safe-area-inset-bottom));
   z-index: 32;
@@ -802,13 +802,13 @@ body {
   .creditos { bottom: 5.4rem; }
 
   .letter-scroll { padding: 0.35rem 0.35rem 6rem; }
-  .illustrated-letter { width: 100%; min-height: calc(100svh - 6.35rem); object-fit: cover; object-position: top center; }
+  .illustrated-letter { width: calc(100vw - 0.7rem); min-height: 0; object-fit: contain; }
   .etapa-limpieza { height: 68svh; }
   .amigos-area { inset: 1rem 0.5rem 7rem; }
   .amiguito { width: clamp(2.15rem, 12vw, 3.1rem); height: clamp(2.85rem, 16vw, 4.1rem); }
   .rasca-marco { width: min(88vw, 27rem); }
   .rasca-progreso { width: min(88vw, 27rem); }
-  .carta-musical-wrap { width: min(92vw, 34rem); }
+  .carta-musical-wrap { width: min(78vw, 34rem); }
   .etapa-musical { padding-bottom: 5.5rem; }
   .etapa-final { max-height: 72svh; overflow-y: auto; }
   .mensaje-final { font-size: clamp(1.35rem, 6.1vw, 1.8rem); line-height: 1.2; }
