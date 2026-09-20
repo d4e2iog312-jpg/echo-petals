@@ -83,6 +83,8 @@ export function MusicLetter({ onPlayback }: { onPlayback: (playing: boolean) => 
     <section className="etapa etapa-musical">
       <div className={`carta-musical-wrap ${playing ? "audio-activo" : ""}`}>
         <img src="/assets/carta-ilustrada-key.jpeg" alt="Carta ilustrada My Last Love para Key" />
+        <img className="spotify-reference-player" src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG_20260920_163901-Scpq0QwCoaROEgTzG1E0WMS6kiKIKG.png" alt="Reproductor Spotify 505 integrado" />
+        <img className="spotify-reference-lyrics" src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG_20260920_163818-p2rmiw7h9gHr88PIdbAXCoGVg1ys26.png" alt="Letra de 505 en una tarjeta de Spotify" />
         <audio
           ref={audioRef}
           src={track.src}
