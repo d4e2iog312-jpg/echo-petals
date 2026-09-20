@@ -92,20 +92,14 @@ export function MusicLetter({ onPlayback }: { onPlayback: (playing: boolean) => 
             setTime(0);
           }}
         />
-        <div className="spotify-player" aria-label="Reproductor de 505 de Arctic Monkeys">
-          <button type="button" className="spotify-play" onClick={() => togglePlayback("spotify")} aria-label={playing ? "Pausar 505" : "Reproducir 505"}>
-            <span aria-hidden="true">{playing ? "❚❚" : "▶"}</span>
-          </button>
-          <div className="spotify-details">
-            <div className="spotify-track"><strong>{track.title}</strong><span> · {track.artist}</span><time>{formatTime(time)} / {formatTime(duration)}</time></div>
-            <input className="spotify-progress" aria-label="Progreso de 505" type="range" min="0" max={duration || 1} value={Math.min(time, duration || 1)} onChange={(event) => { if (audioRef.current) { audioRef.current.currentTime = Number(event.target.value); setTime(Number(event.target.value)); } }} />
-            <div className="spotify-lyrics-window" aria-live="polite">
-              <div className="spotify-lyrics-track" style={{ transform: `translateY(-${Math.max(0, lyricIndex - 1) * 1.2}rem)` }}>
-                {LYRICS.map((line, index) => <span key={line.at} className={index === lyricIndex ? "is-current" : ""}>{line.text}</span>)}
-              </div>
-            </div>
-          </div>
-        </div>
+        <button type="button" className="spotify-card-overlay" onClick={() => togglePlayback("spotify")} aria-label={playing && currentTrack === "spotify" ? "Pausar 505" : "Reproducir 505"}>
+          <span className="sr-only">{playing && currentTrack === "spotify" ? "Pausar 505" : "Reproducir 505"}</span>
+          <span className="spotify-live-lyrics" aria-live="polite">
+            <span className="spotify-live-lyrics-track" style={{ transform: `translateY(-${Math.max(0, lyricIndex - 1) * 1.2}rem)` }}>
+              {LYRICS.map((line, index) => <span key={line.at} className={index === lyricIndex ? "is-current" : ""}>{line.text}</span>)}
+            </span>
+          </span>
+        </button>
         <div className="audios-flotantes" aria-label="Botones de audio dibujados en la carta">
           <div className="controles-integrados">
             <button type="button" className="control-imagen control-barra-1" onClick={() => togglePlayback("button1")} aria-label={playing && currentTrack === "button1" ? "Pausar Cha Cha" : "Reproducir Cha Cha"} />
