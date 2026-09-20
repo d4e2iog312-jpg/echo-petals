@@ -1,12 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Pause, Play } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
-const TRACK = {
-  title: "505",
-  artist: "Arctic Monkeys",
-  src: "/assets/505-arctic-monkeys.mp3",
-};
+const TRACKS = {
+  spotify: { title: "505", artist: "Arctic Monkeys", src: "/assets/505-arctic-monkeys.mp3" },
+  button1: { title: "Cha Cha", artist: "Josephson", src: "/assets/chachacha.mp3" },
+  button2: { title: "Mi Girasol", artist: "Mon Laferte", src: "/assets/my-one-and-only-love.mp3" },
+} as const;
+type TrackKey = keyof typeof TRACKS;
 
 const LYRICS = [
   { at: 0, text: "I'm going back to 505" },
@@ -24,9 +23,11 @@ const formatTime = (seconds: number) => {
 
 export function MusicLetter({ onPlayback }: { onPlayback: (playing: boolean) => void }) {
   const audioRef = useRef<HTMLAudioElement>(null);
+  const [currentTrack, setCurrentTrack] = useState<TrackKey>("spotify");
   const [playing, setPlaying] = useState(false);
   const [time, setTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const track = TRACKS[currentTrack];
 
   const lyricIndex = useMemo(() => {
     let current = 0;
@@ -36,6 +37,8 @@ export function MusicLetter({ onPlayback }: { onPlayback: (playing: boolean) => 
     return current;
   }, [time]);
 
+  const progressPercent = duration > 0 ? (time / duration) * 100 : 0;
+
   useEffect(() => () => audioRef.current?.pause(), []);
 
   const setPlayingState = (nextPlaying: boolean) => {
@@ -43,12 +46,31 @@ export function MusicLetter({ onPlayback }: { onPlayback: (playing: boolean) => 
     onPlayback(nextPlaying);
   };
 
-  const togglePlayback = async () => {
+  const togglePlayback = async (nextTrack: TrackKey) => {
     const audio = audioRef.current;
     if (!audio) return;
+    if (currentTrack !== nextTrack) {
+      audio.pause();
+      audio.src = TRACKS[nextTrack].src;
+      audio.load();
+      setCurrentTrack(nextTrack);
+      setTime(0);
+      setDuration(0);
+      try {
+        await audio.play();
+        setPlayingState(true);
+      } catch {
+        setPlayingState(false);
+      }
+      return;
+    }
     if (audio.paused) {
-      await audio.play();
-      setPlayingState(true);
+      try {
+        await audio.play();
+        setPlayingState(true);
+      } catch {
+        setPlayingState(false);
+      }
     } else {
       audio.pause();
       setPlayingState(false);
@@ -57,36 +79,35 @@ export function MusicLetter({ onPlayback }: { onPlayback: (playing: boolean) => 
 
   return (
     <section className="etapa etapa-musical">
-      <div className="carta-musical-wrap">
+      <div className={`carta-musical-wrap ${playing ? "audio-activo" : ""}`}>
         <img src="/assets/carta-ilustrada-key.jpeg" alt="Carta ilustrada My Last Love para Key" />
-        <div className="audios-flotantes">
-          <div className="audio-mensaje audio-pos-1">
-            <audio
-              ref={audioRef}
-              src={TRACK.src}
-              preload="metadata"
-              onLoadedMetadata={(event) => setDuration(event.currentTarget.duration)}
-              onTimeUpdate={(event) => setTime(event.currentTarget.currentTime)}
-              onPlay={() => setPlayingState(true)}
-              onPause={() => setPlayingState(false)}
-              onEnded={() => {
-                setPlayingState(false);
-                setTime(0);
-              }}
-            />
-            <Button type="button" size="icon" className="audio-play" onClick={togglePlayback} aria-label={playing ? "Pausar 505" : "Reproducir 505"}>
-              {playing ? <Pause /> : <Play />}
-            </Button>
-            <div className="audio-info">
-              <div className={`frecuencias ${playing ? "onda-activa" : ""}`} aria-hidden>
-                {Array.from({ length: 20 }).map((_, index) => <span key={index} style={{ ["--bar-delay" as string]: `${index * 35}ms` }} />)}
-              </div>
-              <input aria-label="Progreso de 505" type="range" min="0" max={duration || 1} value={Math.min(time, duration || 1)} onChange={(event) => { if (audioRef.current) { audioRef.current.currentTime = Number(event.target.value); setTime(Number(event.target.value)); } }} />
-              <div className="audio-meta"><span>{TRACK.title} · {TRACK.artist}</span><span>{formatTime(time)} / {formatTime(duration)}</span></div>
-              <div className="audio-lyrics" aria-live="polite">
-                {LYRICS.slice(Math.max(0, lyricIndex - 1), lyricIndex + 2).map((line, index) => <span key={line.at} className={index === Math.min(1, lyricIndex) ? "lyric-active" : ""}>{line.text}</span>)}
-              </div>
-            </div>
+        <audio
+          ref={audioRef}
+          src={track.src}
+          preload="metadata"
+          onLoadedMetadata={(event) => setDuration(event.currentTarget.duration)}
+          onTimeUpdate={(event) => setTime(event.currentTarget.currentTime)}
+          onPlay={() => setPlayingState(true)}
+          onPause={() => setPlayingState(false)}
+          onEnded={() => {
+            setPlayingState(false);
+            setTime(0);
+          }}
+        />
+        <button type="button" className="spotify-card-overlay" onClick={() => togglePlayback("spotify")} aria-label={playing && currentTrack === "spotify" ? "Pausar 505" : "Reproducir 505"}>
+          <span className="sr-only">{playing && currentTrack === "spotify" ? "Pausar 505" : "Reproducir 505"}</span>
+          <span className="spotify-progress-live" aria-hidden="true"><span style={{ width: `${progressPercent}%` }} /></span>
+          <span className="spotify-time-live" aria-hidden="true">{formatTime(time)} / {formatTime(duration)}</span>
+          <span className="spotify-live-lyrics" aria-live="polite">
+            <span className="spotify-live-lyrics-track" style={{ transform: `translateY(-${Math.max(0, lyricIndex - 1) * 1.2}rem)` }}>
+              {LYRICS.map((line, index) => <span key={line.at} className={index === lyricIndex ? "is-current" : ""}>{line.text}</span>)}
+            </span>
+          </span>
+        </button>
+        <div className="audios-flotantes" aria-label="Botones de audio dibujados en la carta">
+          <div className="controles-integrados">
+            <button type="button" className="control-imagen control-barra-1" onClick={() => togglePlayback("button1")} aria-label={playing && currentTrack === "button1" ? "Pausar Cha Cha" : "Reproducir Cha Cha"} />
+            <button type="button" className="control-imagen control-barra-2" onClick={() => togglePlayback("button2")} aria-label={playing && currentTrack === "button2" ? "Pausar Mi Girasol" : "Reproducir Mi Girasol"} />
           </div>
         </div>
       </div>

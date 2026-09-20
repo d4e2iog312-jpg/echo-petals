@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { FlowerRain, pedirPermisoSacudida } from "@/components/FlowerRain";
-import { LyricsBar } from "@/components/LyricsBar";
 import { Letter } from "@/components/Letter";
 import { ScratchLetter } from "@/components/ScratchLetter";
 import { MusicLetter } from "@/components/MusicLetter";
@@ -38,7 +37,6 @@ const ETAPAS = 5;
 
 function Pagina() {
   const [etapa, setEtapa] = useState(0);
-  const [audioEl, setAudioEl] = useState<HTMLAudioElement | null>(null);
   const [rascaLista, setRascaLista] = useState(false);
   const [fondoSonando, setFondoSonando] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -48,7 +46,6 @@ function Pagina() {
   useEffect(() => {
     const a = audioRef.current;
     if (!a) return;
-    setAudioEl(a);
     a.volume = 0.85;
     a.play().then(() => setFondoSonando(true)).catch(() => {});
   }, []);
@@ -145,7 +142,6 @@ function Pagina() {
         <footer className="creditos">creador:over_lord.7</footer>
       </main>
 
-      <LyricsBar audio={audioEl} />
     </div>
   );
 }
