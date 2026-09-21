@@ -1,35 +1,40 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { LYRICS, lineIndexAt } from "@/lib/lyrics";
 
-/** Cada frase aparece con la música y se deshace como ceniza al terminar. */
 export function LyricsBar({ audio }: { audio: HTMLAudioElement | null }) {
   const [idx, setIdx] = useState(-1);
-  const [ashes, setAshes] = useState<{ id: number; text: string }[]>([]);
-  const prevIdx = useRef(-1);
-  const seq = useRef(0);
 
   useEffect(() => {
-    if (!audio) return;
-    let raf = 0;
-    const tick = () => {
-      const i = lineIndexAt(audio.currentTime);
-      if (i !== prevIdx.current) {
-        const old = LYRICS[prevIdx.current]?.text;
-        if (old) {
-          const id = seq.current++;
-          setAshes((prev) => [...prev, { id, text: old }]);
-          window.setTimeout(
-            () => setAshes((prev) => prev.filter((a) => a.id !== id)),
-            1600,
-          );
-        }
-        prevIdx.current = i;
-        setIdx(i);
-      }
-      raf = requestAnimationFrame(tick);
+    if (!audio) {
+      setIdx(-1);
+      return;
+    }
+
+    const syncToAudio = () => {
+      setIdx(lineIndexAt(audio.currentTime));
     };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+    const reset = () => setIdx(-1);
+
+    audio.addEventListener("timeupdate", syncToAudio);
+    audio.addEventListener("seeking", syncToAudio);
+    audio.addEventListener("seeked", syncToAudio);
+    audio.addEventListener("loadedmetadata", syncToAudio);
+    audio.addEventListener("play", syncToAudio);
+    audio.addEventListener("pause", syncToAudio);
+    audio.addEventListener("emptied", reset);
+    audio.addEventListener("loadstart", reset);
+    syncToAudio();
+
+    return () => {
+      audio.removeEventListener("timeupdate", syncToAudio);
+      audio.removeEventListener("seeking", syncToAudio);
+      audio.removeEventListener("seeked", syncToAudio);
+      audio.removeEventListener("loadedmetadata", syncToAudio);
+      audio.removeEventListener("play", syncToAudio);
+      audio.removeEventListener("pause", syncToAudio);
+      audio.removeEventListener("emptied", reset);
+      audio.removeEventListener("loadstart", reset);
+    };
   }, [audio]);
 
   const current = LYRICS[idx]?.text ?? "";
@@ -37,18 +42,7 @@ export function LyricsBar({ audio }: { audio: HTMLAudioElement | null }) {
   return (
     <div className="lyrics-bar" aria-live="polite">
       <div className="lyrics-stack">
-        {ashes.map((a) => (
-          <span key={a.id} className="lyric-ash">
-            {a.text}
-          </span>
-        ))}
-        {current ? (
-          <span key={idx} className="lyric-now">
-            {current}
-          </span>
-        ) : (
-          <span className="lyric-dots">♪</span>
-        )}
+        {current ? <span className="lyric-now">{current}</span> : <span className="lyric-dots">♪</span>}
       </div>
     </div>
   );
