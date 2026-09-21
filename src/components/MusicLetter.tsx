@@ -25,6 +25,7 @@ const formatTime = (seconds: number) => {
 
 export function MusicLetter({ onPlayback }: { onPlayback: (playing: boolean) => void }) {
   const audioRef = useRef<HTMLAudioElement>(null);
+  const playbackRequestRef = useRef(0);
   const [currentTrack, setCurrentTrack] = useState<TrackKey>("spotify");
   const [playing, setPlaying] = useState(false);
   const [time, setTime] = useState(0);
@@ -52,25 +53,40 @@ export function MusicLetter({ onPlayback }: { onPlayback: (playing: boolean) => 
     const audio = audioRef.current;
     if (!audio) return;
 
-    if (currentTrack !== nextTrack) {
+    const requestId = ++playbackRequestRef.current;
+    const switchingTrack = currentTrack !== nextTrack;
+
+    if (switchingTrack) {
       audio.pause();
       audio.src = TRACKS[nextTrack].src;
       audio.currentTime = 0;
+      audio.load();
       setCurrentTrack(nextTrack);
       setTime(0);
       setDuration(0);
+    } else if (!audio.paused) {
+      audio.pause();
+      return;
     }
 
-    if (audio.paused) {
-      try {
-        await audio.play();
-        setPlayingState(true);
-      } catch {
-        setPlayingState(false);
+    try {
+      if (audio.readyState < HTMLMediaElement.HAVE_FUTURE_DATA) {
+        await new Promise<void>((resolve, reject) => {
+          const onReady = () => { cleanup(); resolve(); };
+          const onError = () => { cleanup(); reject(new Error("Audio failed to load")); };
+          const cleanup = () => {
+            audio.removeEventListener("canplay", onReady);
+            audio.removeEventListener("error", onError);
+          };
+          audio.addEventListener("canplay", onReady, { once: true });
+          audio.addEventListener("error", onError, { once: true });
+        });
       }
-    } else {
-      audio.pause();
-      setPlayingState(false);
+      if (requestId !== playbackRequestRef.current) return;
+      await audio.play();
+      setPlayingState(true);
+    } catch {
+      if (requestId === playbackRequestRef.current) setPlayingState(false);
     }
   };
 
