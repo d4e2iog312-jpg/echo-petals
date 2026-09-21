@@ -4,6 +4,7 @@ import { FlowerRain, pedirPermisoSacudida } from "@/components/FlowerRain";
 import { Letter } from "@/components/Letter";
 import { ScratchLetter } from "@/components/ScratchLetter";
 import { MusicLetter } from "@/components/MusicLetter";
+import { LyricsBar } from "@/components/LyricsBar";
 import { Button } from "@/components/ui/button";
 import fondo from "@/assets/girasoles.asset.json";
 import cancion from "@/assets/girasol.mp3.asset.json";
@@ -39,6 +40,7 @@ function Pagina() {
   const [etapa, setEtapa] = useState(0);
   const [rascaLista, setRascaLista] = useState(false);
   const [fondoSonando, setFondoSonando] = useState(false);
+  const [audioEl, setAudioEl] = useState<HTMLAudioElement | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // Intento de reproducción automática al abrir; si el navegador la bloquea,
@@ -81,7 +83,17 @@ function Pagina() {
       <div className="fondo-velo" />
       {etapa === 4 && <div className="fondo-final" style={{ backgroundImage: `url(${assetUrl(finalYoshiki)})` }} />}
 
-      <audio ref={audioRef} src={assetUrl(cancion)} loop preload="auto" playsInline />
+      <audio
+        ref={(element) => {
+          audioRef.current = element;
+          setAudioEl(element);
+        }}
+        src={assetUrl(cancion)}
+        loop
+        preload="auto"
+        playsInline
+      />
+      <LyricsBar audio={audioEl} />
 
       <FlowerRain active={etapa >= 1} delicate />
 
