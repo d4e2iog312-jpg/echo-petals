@@ -51,21 +51,16 @@ export function MusicLetter({ onPlayback }: { onPlayback: (playing: boolean) => 
   const togglePlayback = async (nextTrack: TrackKey) => {
     const audio = audioRef.current;
     if (!audio) return;
+
     if (currentTrack !== nextTrack) {
       audio.pause();
       audio.src = TRACKS[nextTrack].src;
-      audio.load();
+      audio.currentTime = 0;
       setCurrentTrack(nextTrack);
       setTime(0);
       setDuration(0);
-      try {
-        await audio.play();
-        setPlayingState(true);
-      } catch {
-        setPlayingState(false);
-      }
-      return;
     }
+
     if (audio.paused) {
       try {
         await audio.play();
@@ -97,7 +92,7 @@ export function MusicLetter({ onPlayback }: { onPlayback: (playing: boolean) => 
             setTime(0);
           }}
         />
-        <button type="button" className={`spotify-card-overlay ${playing && currentTrack === "spotify" ? "is-playing" : ""}`} onClick={() => togglePlayback("spotify")} aria-label={playing && currentTrack === "spotify" ? "Pausar 505" : "Reproducir 505"}>
+        <button type="button" className={`spotify-card-overlay ${playing && currentTrack === "spotify" ? "is-playing" : ""}`} onPointerDown={(event) => { event.preventDefault(); void togglePlayback("spotify"); }} aria-label={playing && currentTrack === "spotify" ? "Pausar 505" : "Reproducir 505"}>
           <span className="spotify-play-state" aria-hidden="true">{playing && currentTrack === "spotify" ? "❚❚" : "▶"}</span>
           <span className="sr-only">{playing && currentTrack === "spotify" ? "Pausar 505" : "Reproducir 505"}</span>
           <span className="spotify-progress-live" aria-hidden="true"><span style={{ width: `${progressPercent}%` }} /></span>
@@ -110,10 +105,10 @@ export function MusicLetter({ onPlayback }: { onPlayback: (playing: boolean) => 
         </button>
         <div className="audios-flotantes" aria-label="Botones de audio dibujados en la carta">
           <div className="controles-integrados">
-            <button type="button" className={`control-imagen control-barra-1 ${playing && currentTrack === "button1" ? "is-playing" : ""}`} onClick={() => togglePlayback("button1")} aria-label={playing && currentTrack === "button1" ? "Pausar Cha Cha" : "Reproducir Cha Cha"}>
+            <button type="button" className={`control-imagen control-barra-1 ${playing && currentTrack === "button1" ? "is-playing" : ""}`} onPointerDown={(event) => { event.preventDefault(); void togglePlayback("button1"); }} aria-label={playing && currentTrack === "button1" ? "Pausar Cha Cha" : "Reproducir Cha Cha"}>
               <span className="wave-state" aria-hidden="true">{playing && currentTrack === "button1" ? "❚❚" : "▶"}</span>
             </button>
-            <button type="button" className={`control-imagen control-barra-2 ${playing && currentTrack === "button2" ? "is-playing" : ""}`} onClick={() => togglePlayback("button2")} aria-label={playing && currentTrack === "button2" ? "Pausar Mi Girasol" : "Reproducir Mi Girasol"}>
+            <button type="button" className={`control-imagen control-barra-2 ${playing && currentTrack === "button2" ? "is-playing" : ""}`} onPointerDown={(event) => { event.preventDefault(); void togglePlayback("button2"); }} aria-label={playing && currentTrack === "button2" ? "Pausar Mi Girasol" : "Reproducir Mi Girasol"}>
               <span className="wave-state" aria-hidden="true">{playing && currentTrack === "button2" ? "❚❚" : "▶"}</span>
             </button>
           </div>

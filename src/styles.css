@@ -703,14 +703,16 @@ body {
 @keyframes borde-musical { 0%, 100% { opacity: .25; } 50% { opacity: .85; } }
 .audios-flotantes { position: absolute; inset: 0; pointer-events: none; z-index: 50; }
 .controles-integrados { position: absolute; inset: 0; pointer-events: none; }
-.control-imagen { position: absolute; display: block; border: 0; padding: 0; background: transparent; opacity: 0; cursor: pointer; pointer-events: auto; z-index: 50; touch-action: manipulation; }
-.control-imagen:focus-visible { outline: 2px solid var(--sol); outline-offset: 2px; }
-.control-barra-1 { left: 2%; top: 58%; width: 45%; height: 8%; }
-.control-barra-2 { left: 2%; top: 78%; width: 45%; height: 8%; }
+.control-imagen { position: absolute; display: block; border: 0; padding: 0; background: transparent; opacity: 0; cursor: pointer; pointer-events: auto; z-index: 50; touch-action: manipulation; transition: opacity .2s ease; }
+.control-imagen:active { opacity: 0.15; }
+.control-imagen:focus-visible { outline: 2px solid var(--sol); outline-offset: 2px; opacity: 0.08; }
+.control-barra-1 { left: 0%; top: 56%; width: 50%; height: 10%; }
+.control-barra-2 { left: 0%; top: 75%; width: 50%; height: 10%; }
 .carta-musical-wrap.audio-activo .control-barra-1::after, .carta-musical-wrap.audio-activo .control-barra-2::after { content: ""; position: absolute; inset: 35% 80% 35% 0; border-radius: 999px; background: var(--sol); opacity: .18; animation: onda-overlay 850ms ease-in-out infinite; }
 @keyframes onda-overlay { 0%, 100% { transform: scaleX(.35); opacity: .08; } 50% { transform: scaleX(1); opacity: .32; } }
 .control-spotify { left: 66%; top: 3%; width: 31%; height: 16%; }
-.spotify-card-overlay { position: absolute; z-index: 50; top: 3%; right: 6%; width: 24%; height: 14%; padding: 0; border: 0; background: transparent; cursor: pointer; pointer-events: auto; touch-action: manipulation; }
+.spotify-card-overlay { position: absolute; z-index: 50; top: 1%; right: 3%; width: 31%; height: 18%; padding: 0; border: 0; background: transparent; cursor: pointer; pointer-events: auto; touch-action: manipulation; opacity: 0; }
+.spotify-card-overlay:focus-visible { opacity: 0; }
 .spotify-play-state { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); color: transparent; font: 700 clamp(.8rem, 2vw, 1.35rem)/1 system-ui, sans-serif; opacity: 0; pointer-events: none; }
 .spotify-card-overlay.is-playing .spotify-play-state { color: var(--sol); animation: estado-pulso .9s ease-in-out infinite; }
 .wave-state { position: absolute; left: 8%; top: 50%; transform: translateY(-50%); color: transparent; opacity: 0; pointer-events: none; }
