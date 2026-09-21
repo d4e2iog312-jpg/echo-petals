@@ -94,7 +94,16 @@ export function MusicLetter({ onPlayback }: { onPlayback: (playing: boolean) => 
     <section className="etapa etapa-musical">
       <p className="audio-instruction">Toca la barra de audio de cada una</p>
       <div className={`carta-musical-wrap ${playing ? "audio-activo" : ""}`}>
-        <img src="/assets/carta-ilustrada-key.jpeg" alt="Carta ilustrada My Last Love para Key" />
+        <video
+          className="carta-musical-video"
+          src="/assets/carta-completa-505.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          aria-label="Animación visual de la carta musical"
+        />
         <audio
           ref={audioRef}
           src={track.src}
