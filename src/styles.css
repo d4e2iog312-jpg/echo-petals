@@ -694,6 +694,7 @@ body {
 
 /* ---------- carta musical ---------- */
 .etapa-musical { width: min(100%, 78rem); padding-bottom: 1rem; }
+.audio-instruction { margin: 0 auto .55rem; color: oklch(.92 .02 85 / .72); font: .68rem/1.2 var(--font-mano); letter-spacing: .04em; text-align: center; }
 .carta-musical-wrap { position: relative; width: min(96vw, 64rem); margin: 0 auto; }
 .carta-musical-wrap > img { display: block; width: 100%; height: auto; max-height: 88svh; object-fit: contain; box-shadow: 0 20px 50px oklch(0.05 0 0 / 0.72); transition: transform .45s ease, filter .45s ease; }
 .carta-musical-wrap.audio-activo > img { animation: carta-respira 1.8s ease-in-out infinite; filter: brightness(1.02) contrast(1.02); }
@@ -709,18 +710,21 @@ body {
 .carta-musical-wrap.audio-activo .control-barra-1::after, .carta-musical-wrap.audio-activo .control-barra-2::after { content: ""; position: absolute; inset: 35% 80% 35% 0; border-radius: 999px; background: var(--sol); opacity: .18; animation: onda-overlay 850ms ease-in-out infinite; }
 @keyframes onda-overlay { 0%, 100% { transform: scaleX(.35); opacity: .08; } 50% { transform: scaleX(1); opacity: .32; } }
 .control-spotify { left: 66%; top: 3%; width: 31%; height: 16%; }
-.spotify-card-overlay { position: absolute; z-index: 50; top: 9%; right: 4%; width: 31%; height: 28%; padding: 0; border: 0; background: transparent; cursor: pointer; pointer-events: auto; }
+.spotify-card-overlay { position: absolute; z-index: 50; top: 3%; right: 6%; width: 24%; height: 14%; padding: 0; border: 0; background: transparent; cursor: pointer; pointer-events: auto; touch-action: manipulation; }
+.spotify-play-state { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); color: transparent; font: 700 clamp(.8rem, 2vw, 1.35rem)/1 system-ui, sans-serif; opacity: 0; pointer-events: none; }
+.spotify-card-overlay.is-playing .spotify-play-state { color: var(--sol); animation: estado-pulso .9s ease-in-out infinite; }
+.wave-state { position: absolute; left: 8%; top: 50%; transform: translateY(-50%); color: transparent; opacity: 0; pointer-events: none; }
+.control-imagen.is-playing .wave-state { color: var(--sol); animation: estado-pulso .9s ease-in-out infinite; }
+@keyframes estado-pulso { 0%, 100% { opacity: .55; transform: translate(-50%, -50%) scale(.92); } 50% { opacity: 1; transform: translate(-50%, -50%) scale(1.08); } }
 .spotify-card-overlay:focus-visible, .control-imagen:focus-visible { outline: 2px solid var(--sol); outline-offset: 2px; }
-.spotify-progress-live { position: absolute; left: 10%; right: 10%; top: 30%; height: .2rem; overflow: hidden; border-radius: 999px; background: oklch(.95 .01 85 / .28); pointer-events: none; }
-.spotify-progress-live span { display: block; height: 100%; border-radius: inherit; background: var(--sol); transition: width .2s linear; }
-.spotify-time-live { position: absolute; right: 9%; top: 23%; color: oklch(.96 .01 85 / .7); font: .52rem/1 var(--font-mano); pointer-events: none; }
-.spotify-live-lyrics { position: absolute; inset: 34% 8% 8%; overflow: hidden; opacity: 1; color: var(--sol); font: .72rem/1.2 var(--font-mano); text-align: left; pointer-events: none; }
-.spotify-live-lyrics-track { display: grid; transition: transform .45s cubic-bezier(.22,.61,.36,1); }
-.spotify-live-lyrics-track span { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
-.spotify-live-lyrics-track .is-current { font-weight: 700; }
+.spotify-progress-live, .spotify-time-live, .spotify-live-lyrics { opacity: 0; pointer-events: none; }
+.spotify-live-lyrics { position: absolute; inset: 28% 9% 8%; overflow: hidden; font: clamp(.52rem, 1.2vw, .82rem)/1.2 var(--font-mano); text-align: left; }
+.spotify-live-lyrics-track { display: grid; transition: transform .55s cubic-bezier(.22,.61,.36,1); }
+.spotify-live-lyrics-track span { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; opacity: .42; transition: opacity .35s ease, color .35s ease; }
+.spotify-live-lyrics-track .is-current { color: var(--sol); opacity: 1; font-weight: 700; }
 
 .audio-mensaje {
-  display: none;
+  display: none !important;
   position: absolute;
   left: 67%;
   top: 4.3%;
@@ -798,55 +802,8 @@ body {
   to { opacity: 1; transform: none; filter: blur(0); }
 }
 
-/* ---------- letra de la canción ---------- */
-.lyrics-bar {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 6;
-  pointer-events: none;
-  padding: 1.5rem 1rem 2rem;
-  background: linear-gradient(to top, oklch(0.2 0.06 35 / 0.72), transparent);
-  display: flex;
-  justify-content: center;
-}
-
-.lyrics-stack {
-  position: relative;
-  min-height: 3rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  width: min(100%, 60rem);
-}
-
-.lyric-now {
-  font-family: var(--font-mano);
-  font-size: clamp(1.35rem, 4vw, 2.4rem);
-  color: oklch(0.98 0.02 90);
-  text-shadow: 0 4px 18px oklch(0.2 0.08 35 / 0.9);
-  animation: tinta 0.6s ease-out both;
-}
-
-.lyric-dots { color: var(--sol); opacity: 0.6; font-size: 1.4rem; }
-
-.lyric-ash {
-  position: absolute;
-  left: 0;
-  right: 0;
-  font-family: var(--font-mano);
-  font-size: clamp(1.35rem, 4vw, 2.4rem);
-  color: oklch(0.85 0.02 70);
-  animation: ceniza 1.6s ease-in forwards;
-}
-
-@keyframes ceniza {
-  0% { opacity: 0.9; filter: blur(0) brightness(1); transform: none; letter-spacing: 0; }
-  60% { opacity: 0.4; filter: blur(3px) brightness(0.7) sepia(0.6); transform: translateY(-14px); letter-spacing: 0.08em; }
-  100% { opacity: 0; filter: blur(9px) brightness(0.4) sepia(1); transform: translateY(-34px) scale(1.04); letter-spacing: 0.22em; }
-}
+/* ---------- letra integrada en Spotify ---------- */
+.spotify-state-icon { position: absolute; left: 8%; top: 14%; z-index: 2; color: oklch(.98 .01 85 / .88); font: 700 .7rem/1 system-ui, sans-serif; text-shadow: 0 1px 3px #000; pointer-events: none; }
 
 @media (prefers-reduced-motion: reduce) {
   .fondo { animation: none; }
