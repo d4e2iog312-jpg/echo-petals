@@ -68,7 +68,7 @@ export function ScratchLetter({ onComplete }: { onComplete: () => void }) {
           />
         ))}
         <div className="rasca-marco">
-          <img src="/assets/carta-etapa-dos.png?v=flowers-yellow-exact-20260920" alt="Carta del Día de las Flores Amarillas" />
+          <img src="/assets/carta-etapa-dos.png?v=flowers-yellow-20260920" alt="Carta del Día de las Flores Amarillas" />
           <canvas ref={canvasRef} width={1024} height={1536} aria-label="Superficie para rascar y descubrir la carta" onPointerDown={(event) => { event.currentTarget.setPointerCapture(event.pointerId); scratch(event); }} onPointerMove={scratch} />
         </div>
       </div>
