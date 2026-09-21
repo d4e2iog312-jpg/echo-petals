@@ -696,7 +696,7 @@ body {
 .etapa-musical { width: min(100%, 78rem); padding-bottom: 1rem; }
 .audio-instruction { margin: 0 auto .55rem; color: oklch(.92 .02 85 / .72); font: .68rem/1.2 var(--font-mano); letter-spacing: .04em; text-align: center; }
 .carta-musical-wrap { position: relative; width: min(96vw, 64rem); margin: 0 auto; }
-.carta-musical-video { display: block; width: 100%; height: auto; max-height: 88svh; object-fit: contain; box-shadow: 0 20px 50px oklch(0.05 0 0 / 0.72); pointer-events: none; }
+.carta-musical-video { display: block; width: 100%; height: auto; max-height: 88svh; object-fit: contain; object-position: center; image-rendering: auto; box-shadow: 0 20px 50px oklch(0.05 0 0 / 0.72); pointer-events: none; }
 .carta-musical-wrap.audio-activo > .carta-musical-video { filter: brightness(1.02) contrast(1.02); }
 .carta-musical-wrap.audio-activo::after { content: ""; position: absolute; inset: .4%; pointer-events: none; border: 1px solid oklch(.95 .08 85 / .28); box-shadow: 0 0 24px oklch(.8 .12 75 / .18); animation: borde-musical 1.8s ease-in-out infinite; }
 @keyframes carta-respira { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-1px) scale(1.002); } }

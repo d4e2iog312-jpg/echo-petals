@@ -42,7 +42,18 @@ export function MusicLetter({ onPlayback }: { onPlayback: (playing: boolean) => 
 
   const progressPercent = duration > 0 ? (time / duration) * 100 : 0;
 
-  useEffect(() => () => audioRef.current?.pause(), []);
+  useEffect(() => {
+    return () => {
+      playbackRequestRef.current += 1;
+      const audio = audioRef.current;
+      if (audio) {
+        audio.pause();
+        audio.currentTime = 0;
+        audio.removeAttribute("src");
+        audio.load();
+      }
+    };
+  }, []);
 
   const setPlayingState = (nextPlaying: boolean) => {
     setPlaying(nextPlaying);
@@ -58,8 +69,9 @@ export function MusicLetter({ onPlayback }: { onPlayback: (playing: boolean) => 
 
     if (switchingTrack) {
       audio.pause();
-      audio.src = TRACKS[nextTrack].src;
       audio.currentTime = 0;
+      setPlayingState(false);
+      audio.src = TRACKS[nextTrack].src;
       audio.load();
       setCurrentTrack(nextTrack);
       setTime(0);
@@ -101,8 +113,9 @@ export function MusicLetter({ onPlayback }: { onPlayback: (playing: boolean) => 
           loop
           muted
           playsInline
-          preload="auto"
-          aria-label="Animación visual de la carta musical"
+          preload="metadata"
+          aria-hidden="true"
+          tabIndex={-1}
         />
         <audio
           ref={audioRef}
